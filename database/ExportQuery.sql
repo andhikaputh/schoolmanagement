@@ -1,16 +1,16 @@
 -- =========================================
--- DROP TABLES IF EXIST (to reset schema)
+-- DROP TABLES IF EXIST
 -- =========================================
-DROP TABLE IF EXISTS course;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS program;
-DROP TABLE IF EXISTS faculty;
-DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS Courses;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Programs;
+DROP TABLE IF EXISTS Faculties;
+DROP TABLE IF EXISTS Roles;
 
 -- =========================================
--- CREATE TABLE: role
+-- CREATE TABLE: Roles
 -- =========================================
-CREATE TABLE role (
+CREATE TABLE Roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
@@ -22,9 +22,9 @@ CREATE TABLE role (
 );
 
 -- =========================================
--- CREATE TABLE: faculty
+-- CREATE TABLE: Faculties
 -- =========================================
-CREATE TABLE faculty (
+CREATE TABLE Faculties (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
 
@@ -35,12 +35,12 @@ CREATE TABLE faculty (
 );
 
 -- =========================================
--- CREATE TABLE: program
+-- CREATE TABLE: Programs
 -- =========================================
-CREATE TABLE program (
+CREATE TABLE Programs (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    faculty_id INTEGER NOT NULL REFERENCES faculty(id) ON DELETE CASCADE,
+    faculty_id INTEGER NOT NULL REFERENCES Faculties(id) ON DELETE CASCADE,
 
     created_by INTEGER,
     updated_by INTEGER,
@@ -49,15 +49,15 @@ CREATE TABLE program (
 );
 
 -- =========================================
--- CREATE TABLE: users
+-- CREATE TABLE: Users
 -- =========================================
-CREATE TABLE users (
+CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     nip VARCHAR(20) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    role_id INTEGER NOT NULL REFERENCES role(id),
-    program_id INTEGER REFERENCES program(id),
+    role_id INTEGER NOT NULL REFERENCES Roles(id),
+    program_id INTEGER REFERENCES Programs(id),
     is_active BOOLEAN DEFAULT TRUE,
     graduate_at DATE,
 
@@ -68,13 +68,13 @@ CREATE TABLE users (
 );
 
 -- =========================================
--- CREATE TABLE: course
+-- CREATE TABLE: Courses
 -- =========================================
-CREATE TABLE course (
+CREATE TABLE Courses (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     sks INTEGER NOT NULL,
-    program_id INTEGER NOT NULL REFERENCES program(id) ON DELETE CASCADE,
+    program_id INTEGER NOT NULL REFERENCES Programs(id) ON DELETE CASCADE,
 
     created_by INTEGER,
     updated_by INTEGER,
@@ -83,45 +83,45 @@ CREATE TABLE course (
 );
 
 -- =========================================
--- INSERT DATA INTO role
+-- INSERT DATA INTO Roles
 -- =========================================
-INSERT INTO role (name, description, created_by, updated_by)
-VALUES 
+INSERT INTO Roles (name, description, created_by, updated_by)
+VALUES
   ('admin', 'System administrator', 1, 1),
   ('lecturer', 'Faculty lecturer', 1, 1),
   ('student', 'University student', 1, 1);
 
 -- =========================================
--- INSERT DATA INTO faculty
+-- INSERT DATA INTO Faculties
 -- =========================================
-INSERT INTO faculty (name, created_by, updated_by)
-VALUES 
+INSERT INTO Faculties (name, created_by, updated_by)
+VALUES
   ('Faculty of Engineering', 1, 1),
   ('Faculty of Science', 1, 1),
   ('Faculty of Business', 1, 1);
 
 -- =========================================
--- INSERT DATA INTO program
+-- INSERT DATA INTO Programs
 -- =========================================
-INSERT INTO program (name, faculty_id, created_by, updated_by)
-VALUES 
+INSERT INTO Programs (name, faculty_id, created_by, updated_by)
+VALUES
   ('Computer Science', 1, 1, 1),
   ('Physics', 2, 1, 1),
   ('Marketing', 3, 1, 1);
 
 -- =========================================
--- INSERT DATA INTO course
+-- INSERT DATA INTO Courses
 -- =========================================
-INSERT INTO course (name, sks, program_id, created_by, updated_by)
-VALUES 
+INSERT INTO Courses (name, sks, program_id, created_by, updated_by)
+VALUES
   ('Data Structures', 3, 1, 1, 1),
   ('Quantum Mechanics', 4, 2, 1, 1),
   ('Consumer Behavior', 2, 3, 1, 1);
 
 -- =========================================
--- INSERT DATA INTO users
+-- INSERT DATA INTO Users
 -- =========================================
-INSERT INTO users (nip, password, name, role_id, program_id, is_active, graduate_at, created_by, updated_by)
+INSERT INTO Users (nip, password, name, role_id, program_id, is_active, graduate_at, created_by, updated_by)
 VALUES 
   ('1001', 'hashedpass1', 'Alice Admin', 1, NULL, TRUE, NULL, 1, 1),
   ('1002', 'hashedpass2', 'Bob Lecturer', 2, 1, TRUE, NULL, 1, 1),
