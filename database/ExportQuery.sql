@@ -15,10 +15,10 @@ CREATE TABLE Roles (
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
 
-    created_by INTEGER,
-    updated_by INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =========================================
@@ -28,10 +28,10 @@ CREATE TABLE Faculties (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
 
-    created_by INTEGER,
-    updated_by INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =========================================
@@ -42,10 +42,10 @@ CREATE TABLE Programs (
     name VARCHAR(100) NOT NULL,
     faculty_id INTEGER NOT NULL REFERENCES Faculties(id) ON DELETE CASCADE,
 
-    created_by INTEGER,
-    updated_by INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =========================================
@@ -61,10 +61,10 @@ CREATE TABLE Users (
     is_active BOOLEAN DEFAULT TRUE,
     graduate_at DATE,
 
-    created_by INTEGER,
-    updated_by INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =========================================
@@ -76,16 +76,16 @@ CREATE TABLE Courses (
     sks INTEGER NOT NULL,
     program_id INTEGER NOT NULL REFERENCES Programs(id) ON DELETE CASCADE,
 
-    created_by INTEGER,
-    updated_by INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =========================================
 -- INSERT DATA INTO Roles
 -- =========================================
-INSERT INTO Roles (name, description, created_by, updated_by)
+INSERT INTO Roles (name, description, createdBy, updatedBy)
 VALUES
   ('admin', 'System administrator', 1, 1),
   ('lecturer', 'Faculty lecturer', 1, 1),
@@ -94,7 +94,7 @@ VALUES
 -- =========================================
 -- INSERT DATA INTO Faculties
 -- =========================================
-INSERT INTO Faculties (name, created_by, updated_by)
+INSERT INTO Faculties (name, createdBy, updatedBy)
 VALUES
   ('Faculty of Engineering', 1, 1),
   ('Faculty of Science', 1, 1),
@@ -103,7 +103,7 @@ VALUES
 -- =========================================
 -- INSERT DATA INTO Programs
 -- =========================================
-INSERT INTO Programs (name, faculty_id, created_by, updated_by)
+INSERT INTO Programs (name, faculty_id, createdBy, updatedBy)
 VALUES
   ('Computer Science', 1, 1, 1),
   ('Physics', 2, 1, 1),
@@ -112,7 +112,7 @@ VALUES
 -- =========================================
 -- INSERT DATA INTO Courses
 -- =========================================
-INSERT INTO Courses (name, sks, program_id, created_by, updated_by)
+INSERT INTO Courses (name, sks, program_id, createdBy, updatedBy)
 VALUES
   ('Data Structures', 3, 1, 1, 1),
   ('Quantum Mechanics', 4, 2, 1, 1),
@@ -121,7 +121,7 @@ VALUES
 -- =========================================
 -- INSERT DATA INTO Users
 -- =========================================
-INSERT INTO Users (nip, password, name, role_id, program_id, is_active, graduate_at, created_by, updated_by)
+INSERT INTO Users (nip, password, name, role_id, program_id, is_active, graduate_at, createdBy, updatedBy)
 VALUES 
   ('1001', 'hashedpass1', 'Alice Admin', 1, NULL, TRUE, NULL, 1, 1),
   ('1002', 'hashedpass2', 'Bob Lecturer', 2, 1, TRUE, NULL, 1, 1),
