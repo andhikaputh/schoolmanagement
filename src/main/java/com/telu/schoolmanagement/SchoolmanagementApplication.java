@@ -9,7 +9,6 @@ public class SchoolmanagementApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SchoolmanagementApplication.class, args);
-		System.out.println("Hello World");
 	}
 
 }
