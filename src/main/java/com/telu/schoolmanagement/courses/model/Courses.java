@@ -27,9 +27,9 @@ public class Courses {
 
     //    refer to users table
     @Column(name = "created_by")
-    private int createdBy;
+    private Long createdBy;
     @Column(name = "updated_by")
-    private int updatedBy;
+    private Long updatedBy;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
