@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface FacultyRepository extends JpaRepository<Faculties, Long> {
     Faculties getFacultyByName(String name);
-    List<Faculties> getByNameContaining(String keyword);
+    List<Faculties> findByNameIgnoreCaseContaining(String keyword);
 }
