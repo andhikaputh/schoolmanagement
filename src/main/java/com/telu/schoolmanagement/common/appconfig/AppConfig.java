@@ -16,5 +16,4 @@ public class AppConfig implements ApplicationContextInitializer<ConfigurableAppl
         System.setProperty("REDIS_HOST", dotenv.get("REDIS_HOST"));
         System.setProperty("REDIS_PORT", dotenv.get("REDIS_PORT"));
     }
-
 }

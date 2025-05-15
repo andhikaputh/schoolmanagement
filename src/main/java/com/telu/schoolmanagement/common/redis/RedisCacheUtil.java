@@ -16,12 +16,11 @@ public class RedisCacheUtil {
 
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
-    private final AppConstant appConstant;
 
     public <T> void cacheValue(String key, T value) {
         try {
             String jsonValue = objectMapper.writeValueAsString(value);
-            redisTemplate.opsForValue().set(key, jsonValue, Duration.ofSeconds(appConstant.REDIS_TTL_IN_SECOND));
+            redisTemplate.opsForValue().set(key, jsonValue, Duration.ofSeconds(AppConstant.REDIS_TTL_IN_SECOND));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize object to JSON", e);
         }
