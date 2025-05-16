@@ -49,7 +49,7 @@ CREATE TABLE programs (
 );
 
 -- =========================================
--- CREATE TABLE: users
+-- CREATE TABLE: users (with faculty_id)
 -- =========================================
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -58,6 +58,7 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     role_id INTEGER NOT NULL REFERENCES roles(id),
     program_id INTEGER REFERENCES programs(id),
+    faculty_id INTEGER REFERENCES faculties(id),
     is_active BOOLEAN DEFAULT TRUE,
     graduate_at DATE,
 
@@ -121,8 +122,8 @@ VALUES
 -- =========================================
 -- INSERT DATA INTO users
 -- =========================================
-INSERT INTO users (nip, password, name, role_id, program_id, is_active, graduate_at, created_by, updated_by)
+INSERT INTO users (nip, password, name, role_id, program_id, faculty_id, is_active, graduate_at, created_by, updated_by)
 VALUES 
-  ('1001', 'hashedpass1', 'Alice Admin', 1, NULL, TRUE, NULL, 1, 1),
-  ('1002', 'hashedpass2', 'Bob Lecturer', 2, 1, TRUE, NULL, 1, 1),
-  ('1003', 'hashedpass3', 'Charlie Student', 3, 1, TRUE, '2025-08-01', 1, 1);
+  ('1001', 'hashedpass1', 'Alice Admin', 1, NULL, NULL, TRUE, NULL, 1, 1),
+  ('1002', 'hashedpass2', 'Bob Lecturer', 2, 1, 1, TRUE, NULL, 1, 1),
+  ('1003', 'hashedpass3', 'Charlie Student', 3, 1, 1, TRUE, '2025-08-01', 1, 1);
