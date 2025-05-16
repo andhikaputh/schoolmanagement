@@ -1,13 +1,11 @@
-package com.telu.schoolmanagement.users.model;
+package com.telu.schoolmanagement.roles.model;
 
-import com.telu.schoolmanagement.roles.model.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,24 +13,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Users {
+public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nip;
-    private String password;
     private String name;
+    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Roles role;
-
-    private Boolean isActive;
-    private LocalDate graduateAt;
+    @Column(name = "created_by")
     private Long createdBy;
     private Long updatedBy;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }
