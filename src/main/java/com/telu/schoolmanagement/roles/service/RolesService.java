@@ -49,7 +49,7 @@ public class RolesService {
 
     public void updateRoles(Long id, RolesRequestDTO requestDTO){
         Roles newRoles = rolesRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Mahasiswa dengan ID " + id + "tidak ditemukan."));
+                .orElseThrow(() -> new EntityNotFoundException("Roles dengan ID " + id + "tidak ditemukan."));
 
         newRoles.setName(requestDTO.getName());
         rolesRepository.save(newRoles);
