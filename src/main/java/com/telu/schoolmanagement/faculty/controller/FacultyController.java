@@ -36,9 +36,9 @@ public class FacultyController {
     }
 
     @Operation(summary = "Search faculty by name", description = "Find faculty by name")
-    @GetMapping("/name={name}")
-    public ResponseEntity<ApiResponse<List<FacultyResponseDTO>>> getJurusanByName(@PathVariable String query) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "success", facultyService.getFacultyByName(query)));
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<FacultyResponseDTO>>> getFacultyByName(@RequestParam String name) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", facultyService.getFacultyByName(name)));
     }
 
     @Operation(summary = "Create a new faculty", description = "Adding new faculty.")

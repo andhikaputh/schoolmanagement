@@ -27,7 +27,7 @@ public class FacultyService {
     }
 
     public List<FacultyResponseDTO> getFacultyByName(String query){
-        return facultyRepository.getByNameContaining(query).stream()
+        return facultyRepository.findByNameIgnoreCaseContaining(query).stream()
                 .map(FacultyMapper::toDTO)
                 .toList();
     }
