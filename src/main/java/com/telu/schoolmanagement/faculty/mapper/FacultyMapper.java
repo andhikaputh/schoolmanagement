@@ -8,6 +8,10 @@ public class FacultyMapper {
         return FacultyResponseDTO.builder()
                 .id(faculty.getId())
                 .facultyname(faculty.getName())
+                .createdBy(faculty.getCreatedBy())
+                .updatedBy(faculty.getUpdatedBy())
+                .createdAt(faculty.getCreatedAt())
+                .createdBy(faculty.getCreatedBy())
                 .build();
     }
 }
