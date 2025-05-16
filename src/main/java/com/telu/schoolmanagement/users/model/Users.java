@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.users.model;
 
+import com.telu.schoolmanagement.roles.model.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,9 @@ public class Users {
     private String password;
     private String name;
 
-    // Role, Program
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Roles role;
 
     private Boolean isActive;
     private LocalDate graduateAt;
