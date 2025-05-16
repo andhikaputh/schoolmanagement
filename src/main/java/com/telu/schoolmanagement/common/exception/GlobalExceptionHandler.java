@@ -34,8 +34,10 @@ public class GlobalExceptionHandler {
                 false,
                 ex.getMessage(),
                 LocalDateTime.now(),
-                request.getDescription(false).replace("uri=", "")
+                request.getDescription(false).replace("url=","")
         );
+
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

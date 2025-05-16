@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 public class ErrorResponse {
     private boolean success;
     private String message;
-    private LocalDateTime timestamp;
+
+    private LocalDateTime timeStamp;
     private String path;
 }
+
