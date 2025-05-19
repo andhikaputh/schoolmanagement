@@ -40,16 +40,20 @@ public class FacultyService {
                 .toList();
     }
 
-    public void createFaculty(FacultyRequestDTO requestDTO) {
-        Users admin = usersRepository.findById(1L)
-                .orElseThrow(() -> new EntityNotFoundException("Admin dengan ID 1 tidak ditemukan."));
+    public void createFaculty(FacultyRequestDTO requestDTO, Long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found."));
 
+        if (user.getRole() == null || user.getRole().getId() != 1 ) {
+            throw new SecurityException("Only user admin that can create faculty.");
+        }
 
         Faculties faculty = Faculties.builder()
                 .name(requestDTO.getFacultyName())
-                .createdBy(admin)
-                .updatedBy(admin)
+                .createdBy(user)
+                .updatedBy(user)
                 .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         facultyRepository.save(faculty);
@@ -57,14 +61,14 @@ public class FacultyService {
 
     public void deleteFacultyById(Long id) {
         if (!facultyRepository.existsById(id)) {
-            throw new EntityNotFoundException("Faculty dengan ID " + id + " tidak ditemukan.");
+            throw new EntityNotFoundException("Faculty with id " + id + " not found.");
         }
         facultyRepository.deleteById(id);
     }
 
     public void updateFaculty(Long id, FacultyRequestDTO requestDTO) {
         Faculties newFaculty = facultyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Faculty dengan ID " + id + " tidak ditemukan."));
+                .orElseThrow(() -> new EntityNotFoundException("Faculty with ID " + id + " not found."));
 
         newFaculty.setName(requestDTO.getFacultyName());
         newFaculty.setUpdatedAt(LocalDateTime.now());
