@@ -9,6 +9,7 @@ public class CoursesMapper {
         return CoursesResponseDTO.builder()
                 .id(courses.getId())
                 .name(courses.getName())
+                .slug(courses.getSlug())
                 .sks(courses.getSks())
                 .programId(courses.getProgramId())
                 .createdBy(courses.getCreatedBy())

@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.courses.model;
 
+import com.telu.schoolmanagement.common.util.Util;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class Courses {
     private Long id;
 
     private String name;
+    private String slug;
     private int sks;
 
     //    refer to programs table
@@ -35,4 +37,10 @@ public class Courses {
     private LocalDateTime createdAt;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    @PreUpdate
+    public void setSlugAuto() {
+        this.slug = Util.setSlugFromName(this.name);
+    }
 }
