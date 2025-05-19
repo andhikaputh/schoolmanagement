@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class CoursesResponseDTO {
     private Long id;
     private String name;
+    private String slug;
     private int sks;
     private int programId;
     private Long createdBy;
