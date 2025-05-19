@@ -29,8 +29,12 @@ public class CoursesController {
     @Operation(summary = "Search course by id or name")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> searchCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+        if (id == null && name == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Request is not valid: both id and name are null", null));
+        }
+
         List<CoursesResponseDTO> courses = coursesService.searchCourses(id, name);
-        if (courses != null) {
+        if (courses != null && !courses.isEmpty()) {
             return ResponseEntity.ok(new ApiResponse<>(true, "success", courses));
         } else {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Course not found", null));
