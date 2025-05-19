@@ -7,7 +7,10 @@ import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -36,6 +39,7 @@ public class FacultyService {
 
         Faculties faculty = Faculties.builder()
                 .name(requestDTO.getFacultyName())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         facultyRepository.save(faculty);
@@ -53,6 +57,7 @@ public class FacultyService {
                 .orElseThrow(() -> new EntityNotFoundException("Faculty dengan ID " + id + " tidak ditemukan."));
 
         newFaculty.setName(requestDTO.getFacultyName());
+        newFaculty.setUpdatedAt(LocalDateTime.now());
         facultyRepository.save(newFaculty);
     }
 
