@@ -1,18 +1,21 @@
 package com.telu.schoolmanagement.program.mapper;
 
+import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.program.dto.ProgramResponseDTO;
-import com.telu.schoolmanagement.program.model.Program;
+import com.telu.schoolmanagement.program.model.Programs;
 
 public class ProgramMapper {
-    public static ProgramResponseDTO toDTO(Program program) {
+    public static ProgramResponseDTO toDTO(Programs programs) {
         return ProgramResponseDTO.builder()
-                .id(program.getId())
-                .name(program.getName())
-                .facultyId(program.getFacultyId())
-                .createdBy(program.getCreatedBy())
-                .updatedBy(program.getUpdatedBy())
-                .createdAt(program.getCreatedAt())
-                .updatedAt(program.getUpdatedAt())
+                .id(programs.getId())
+                .name(programs.getName())
+                .faculties(
+                        programs.getFaculty()
+                )
+                .createdBy(programs.getCreatedBy())
+                .updatedBy(programs.getUpdatedBy())
+                .createdAt(programs.getCreatedAt())
+                .updatedAt(programs.getUpdatedAt())
                 .build();
 
     }

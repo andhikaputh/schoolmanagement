@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.program.dto;
 
+import com.telu.schoolmanagement.faculty.model.Faculties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +15,7 @@ import java.time.LocalDateTime;
 public class ProgramResponseDTO {
     private Long id;
     private String name;
-    private Long facultyId;
-
+    private Faculties faculties;
     private Long createdBy;
     private Long updatedBy;
     private LocalDateTime createdAt;

@@ -1,9 +1,11 @@
 package com.telu.schoolmanagement.program.service;
 
+import com.telu.schoolmanagement.faculty.model.Faculties;
+import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
 import com.telu.schoolmanagement.program.dto.ProgramRequestDTO;
 import com.telu.schoolmanagement.program.dto.ProgramResponseDTO;
 import com.telu.schoolmanagement.program.mapper.ProgramMapper;
-import com.telu.schoolmanagement.program.model.Program;
+import com.telu.schoolmanagement.program.model.Programs;
 import com.telu.schoolmanagement.program.repository.ProgramRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,9 @@ public class ProgramService {
 
     @Autowired
     private ProgramRepository programRepository;
+
+    @Autowired
+    private FacultyRepository facultyRepository;
 
     public List<ProgramResponseDTO> getAllProgram() {
         return programRepository.findAll().stream()
@@ -37,17 +42,24 @@ public class ProgramService {
 
     public void createProgram(ProgramRequestDTO request) {
 
-        Program program = Program.builder()
+        Faculties faculties = facultyRepository.findById(request.getFacultyId())
+                .orElseThrow(() -> new RuntimeException("faculty_id not found"));
+
+        Programs programs = Programs.builder()
                 .name(request.getName())
-                .facultyId(request.getFacultyId())
+                .faculty(faculties)
                 .createdAt(request.getCreatedAt())
                 .createdBy(request.getCreatedBy())
+                .updatedBy(request.getUpdatedBy())
+                .updatedAt(request.getUpdatedAt())
                 .build();
+
+        programRepository.save(programs);
     }
 
     public void deleteProgram(Long id) {
         if (!programRepository.existsById(id)) {
-            throw new EntityNotFoundException("Program dengan id " + id + " tidak ada");
+            throw new EntityNotFoundException("Program with id " + id + " doesn't exist");
         }
 
         programRepository.deleteById(id);
@@ -55,11 +67,18 @@ public class ProgramService {
 
     public void updateProgram(Long id, ProgramRequestDTO request) {
 
-        Program newProgram = programRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Program dengan Id " + id + " tidak tersedia"));
+        Programs newPrograms = programRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Program with Id " + id + " doesn't exist"));
 
-        newProgram.setName(request.getName());
-        newProgram.setFacultyId(request.getFacultyId());
-        newProgram.setUpdatedBy(request.getUpdatedBy());
-        newProgram.setUpdatedAt(request.getUpdatedAt());
+        Faculties faculties = facultyRepository.findById(request.getFacultyId())
+                .orElseThrow(() -> new RuntimeException("faculty_id not found"));
+
+        newPrograms.setName(request.getName());
+        newPrograms.setFaculty(faculties);
+        newPrograms.setUpdatedBy(request.getUpdatedBy());
+        newPrograms.setUpdatedAt(request.getUpdatedAt());
+        newPrograms.setCreatedAt(request.getCreatedAt());
+        newPrograms.setUpdatedBy(request.getUpdatedBy());
+
+        programRepository.save(newPrograms);
     }
 }

@@ -25,7 +25,7 @@ public class Users {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Roles role;
 
     private Boolean isActive;
