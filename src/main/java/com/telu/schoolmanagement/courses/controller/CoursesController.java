@@ -23,7 +23,7 @@ public class CoursesController {
     @Operation(summary = "Get all courses")
     @GetMapping
     public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> getAllCourses() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", coursesService.getAllCourses()));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
     }
 
     @Operation(summary = "Search course by id or name")
@@ -31,7 +31,7 @@ public class CoursesController {
     public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> searchCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
         List<CoursesResponseDTO> courses = coursesService.searchCourses(id, name);
         if (courses != null) {
-            return ResponseEntity.ok(new ApiResponse<>(true, "Success", courses));
+            return ResponseEntity.ok(new ApiResponse<>(true, "success", courses));
         } else {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Course not found", null));
         }
@@ -42,7 +42,7 @@ public class CoursesController {
     public ResponseEntity<ApiResponse<String>> createCourse(@RequestBody CoursesRequestDTO requestDTO){
         //TODO add error handler
         coursesService.createCourse(requestDTO);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", "Success add new course"));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success add new course"));
     }
 
     @Operation(summary = "Update a course")
@@ -50,7 +50,7 @@ public class CoursesController {
     public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody CoursesRequestDTO requestDTO){
         //TODO add error handler
         coursesService.updateCourse(id, requestDTO);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", "Success update a course"));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success update a course"));
     }
 
     @Operation(summary = "Delete a course")
@@ -58,6 +58,6 @@ public class CoursesController {
     public ResponseEntity<ApiResponse<String>> deleteCourse(@RequestParam Long id){
         //TODO add error handler
         coursesService.deleteCourse(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", "Success delete a course"));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success delete a course"));
     }
 }
