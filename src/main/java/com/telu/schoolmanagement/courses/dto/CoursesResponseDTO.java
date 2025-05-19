@@ -1,6 +1,5 @@
-package com.telu.schoolmanagement.faculty.dto;
+package com.telu.schoolmanagement.courses.dto;
 
-import com.telu.schoolmanagement.common.response.GeneralCreatedUpdatedBy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,13 +11,14 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FacultyResponseDTO {
+public class CoursesResponseDTO {
     private Long id;
-    private String facultyName;
-    private GeneralCreatedUpdatedBy createdBy;
-    private GeneralCreatedUpdatedBy updatedBy;
+    private String name;
+    private String slug;
+    private int sks;
+    private int programId;
+    private Long createdBy;
+    private Long updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-
 }
