@@ -49,17 +49,13 @@ CREATE TABLE programs (
 );
 
 -- =========================================
--- CREATE TABLE: users
+-- CREATE TABLE: courses
 -- =========================================
-CREATE TABLE users (
+CREATE TABLE courses (
     id SERIAL PRIMARY KEY,
-    nip VARCHAR(20) UNIQUE NOT NULL,
-    password TEXT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    role_id INTEGER NOT NULL REFERENCES roles(id),
-    program_id INTEGER REFERENCES programs(id),
-    is_active BOOLEAN DEFAULT TRUE,
-    graduate_at DATE,
+    sks INTEGER NOT NULL,
+    program_id INTEGER NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
 
     created_by INTEGER,
     updated_by INTEGER,
@@ -68,13 +64,19 @@ CREATE TABLE users (
 );
 
 -- =========================================
--- CREATE TABLE: courses
+-- CREATE TABLE: users (now with faculty_id AND course_id)
 -- =========================================
-CREATE TABLE courses (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
+    nip VARCHAR(20) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    sks INTEGER NOT NULL,
-    program_id INTEGER NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+    role_id INTEGER NOT NULL REFERENCES roles(id),
+    program_id INTEGER REFERENCES programs(id),
+    faculty_id INTEGER REFERENCES faculties(id),
+    course_id INTEGER REFERENCES courses(id), -- newly added
+    is_active BOOLEAN DEFAULT TRUE,
+    graduate_at DATE,
 
     created_by INTEGER,
     updated_by INTEGER,
@@ -119,10 +121,12 @@ VALUES
   ('Consumer Behavior', 2, 3, 1, 1);
 
 -- =========================================
--- INSERT DATA INTO users
+-- INSERT DATA INTO users (includes faculty_id and course_id)
 -- =========================================
-INSERT INTO users (nip, password, name, role_id, program_id, is_active, graduate_at, created_by, updated_by)
+INSERT INTO users (nip, password, name, role_id, program_id, faculty_id, course_id, is_active, graduate_at, created_by, updated_by)
 VALUES 
-  ('1001', 'hashedpass1', 'Alice Admin', 1, NULL, TRUE, NULL, 1, 1),
-  ('1002', 'hashedpass2', 'Bob Lecturer', 2, 1, TRUE, NULL, 1, 1),
-  ('1003', 'hashedpass3', 'Charlie Student', 3, 1, TRUE, '2025-08-01', 1, 1);
+  ('1001', 'hashedpass1', 'Alice Admin', 1, NULL, NULL, NULL, TRUE, NULL, 1, 1),
+  ('1002', 'hashedpass2', 'Bob Lecturer', 2, 1, 1, 1, TRUE, NULL, 1, 1),
+  ('1003', 'hashedpass3', 'Charlie Student', 3, 1, 1, 1, TRUE, '2025-08-01', 1, 1);
+
+select * from users;
