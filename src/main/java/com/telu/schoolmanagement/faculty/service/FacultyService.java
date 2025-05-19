@@ -5,6 +5,8 @@ import com.telu.schoolmanagement.faculty.dto.FacultyResponseDTO;
 import com.telu.schoolmanagement.faculty.mapper.FacultyMapper;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
+import com.telu.schoolmanagement.users.model.Users;
+import com.telu.schoolmanagement.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -18,6 +20,9 @@ public class FacultyService {
 
     @Autowired
     private FacultyRepository facultyRepository;
+
+    @Autowired
+    private UsersRepository usersRepository;
 
     public List<FacultyResponseDTO> getAllFaculty(){
         return facultyRepository.findAll().stream()
@@ -36,9 +41,14 @@ public class FacultyService {
     }
 
     public void createFaculty(FacultyRequestDTO requestDTO) {
+        Users admin = usersRepository.findById(1L)
+                .orElseThrow(() -> new EntityNotFoundException("Admin dengan ID 1 tidak ditemukan."));
+
 
         Faculties faculty = Faculties.builder()
                 .name(requestDTO.getFacultyName())
+                .createdBy(admin)
+                .updatedBy(admin)
                 .createdAt(LocalDateTime.now())
                 .build();
 
