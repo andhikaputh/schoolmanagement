@@ -1,11 +1,11 @@
 -- =========================================
 -- DROP TABLES IF EXIST
 -- =========================================
-DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS programs;
 DROP TABLE IF EXISTS faculties;
-DROP TABLE IF EXISTS roles;
 
 -- =========================================
 -- CREATE TABLE: roles
@@ -54,6 +54,7 @@ CREATE TABLE programs (
 CREATE TABLE courses (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) NOT NULL,
     sks INTEGER NOT NULL,
     program_id INTEGER NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
 
@@ -116,9 +117,9 @@ VALUES
 -- =========================================
 INSERT INTO courses (name, sks, program_id, created_by, updated_by)
 VALUES
-  ('Data Structures', 3, 1, 1, 1),
-  ('Quantum Mechanics', 4, 2, 1, 1),
-  ('Consumer Behavior', 2, 3, 1, 1);
+  ('Data Structures', 'data-structures', 3, 1, 1, 1),
+  ('Quantum Mechanics', 'quantum-mechanics', 4, 2, 1, 1),
+  ('Customer Behavior', 'customer-behavior', 2, 3, 1, 1);
 
 -- =========================================
 -- INSERT DATA INTO users (includes faculty_id and course_id)
