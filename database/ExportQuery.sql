@@ -131,7 +131,7 @@ VALUES
 -- =========================================
 INSERT INTO users (nip, password, name, slug, role_id, program_id, faculty_id, course_id, is_active, graduate_at, created_by, updated_by)
 VALUES
-  ('1001', 'hashedpass1', 'Alice Admin', 'alice-admin', 1, NULL, NULL, NULL, TRUE, NULL, 1, 1),
+  ('1001', '$2a$10$bHeGrxyraFRG6r1FzzRzTuazz2IPJCwtz7H40K9M5Y/2W76sjtdiS', 'Alice Admin', 'alice-admin', 1, NULL, NULL, NULL, TRUE, NULL, 1, 1),
   ('1002', 'hashedpass2', 'Bob Lecturer', 'bob-lecturer', 2, 1, 1, 1, TRUE, NULL, 1, 1),
   ('1003', 'hashedpass3', 'Charlie Student', 'charlie-student', 3, 1, 1, 1, TRUE, '2025-08-01', 1, 1);
 
