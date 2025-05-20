@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class ProgramRequestDTO {
 
-    @NotBlank(message = "Progarm cannot be null")
+    @NotBlank(message = "Program cannot be null")
     private String name;
 
     @NotNull(message = "Faculty Id cannot be null")

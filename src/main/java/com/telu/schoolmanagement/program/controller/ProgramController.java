@@ -22,40 +22,40 @@ public class ProgramController {
     @Autowired
     private ProgramService programService;
 
-    @Operation(summary = "Get all program", description = "Show all program registered")
+    @Operation(summary = "Get All Program", description = "Show All Program Registered")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProgramResponseDTO>>> getAllProgram(){
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", programService.getAllProgram()));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", programService.getAllProgram()));
     }
 
-    @Operation(summary = "Get program by id", description = "find program by id")
-    @GetMapping("/id={id}")
+    @Operation(summary = "Get Program by Id", description = "Find Program by Id")
+    @GetMapping("/id")
     public ResponseEntity<ApiResponse<ProgramResponseDTO>> getProgramById(@PathVariable Long id){
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", programService.getProgramById(id)));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", programService.getProgramById(id)));
     }
 
-    @Operation(summary = "Get program by name", description = "find program by name")
-    @GetMapping("/name={name}")
+    @Operation(summary = "Get Program by Name", description = "Find Program by Name")
+    @GetMapping("/name")
     public ResponseEntity<ApiResponse<List<ProgramResponseDTO>>> getProgramByName(@PathVariable String name){
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", programService.getProgramByName(name)));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", programService.getProgramByName(name)));
     }
 
-    @Operation(summary = "Create a new program", description = "Adding new program.")
+    @Operation(summary = "Create a New Program", description = "Adding New Program.")
     @PostMapping
     public ResponseEntity<ApiResponse<String>> createProgram(@RequestBody @Valid ProgramRequestDTO request) {
         programService.createProgram(request);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", request.toString()));
     }
 
-    @Operation(summary = "Update a program", description = "Updating a program.")
-    @PutMapping
+    @Operation(summary = "Update a Program", description = "Updating a Program.")
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<String>> updateProgram(@RequestBody Long id, @Valid ProgramRequestDTO request) {
         programService.updateProgram(id, request);
         return ResponseEntity.ok(new ApiResponse<>(true, "success update program by id : " + id, request.toString()));
     }
 
-    @Operation(summary = "delete a program", description = "delete a program.")
-    @DeleteMapping
+    @Operation(summary = "Delete a Program", description = "Delete a Program.")
+    @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<String>> deleteJurusanById(@RequestBody Long id) {
         programService.deleteProgram(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "success delete program with id : " + id, null));
