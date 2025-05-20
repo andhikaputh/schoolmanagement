@@ -33,7 +33,6 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
 
-        System.out.println("hash password " + passwordEncoder.encode(request.getPassword()));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getNip(),

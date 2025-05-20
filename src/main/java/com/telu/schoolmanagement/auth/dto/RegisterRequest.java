@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class RegisterRequest {
 
     @NotBlank(message = "Nip Users cannot be blank")
-    @Size(max = 20,  message = "Max Nip is 20 characters")
+    @Size(max = 15,  message = "Max Nip is 15 characters")
     private String nip;
 
     @NotBlank(message = "Password Users cannot be blank")
@@ -31,6 +31,4 @@ public class RegisterRequest {
     private LocalDate graduateAt;
     private Long createdBy;
     private Long updatedBy;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
