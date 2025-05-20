@@ -1,6 +1,6 @@
-package com.telu.schoolmanagement.faculty.model;
+package com.telu.schoolmanagement.program.model;
 
-import com.telu.schoolmanagement.users.model.Users;
+import com.telu.schoolmanagement.faculty.model.Faculties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,26 +11,26 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Faculties {
+public class Programs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
     @ManyToOne
-    @JoinColumn(name= "created_by", referencedColumnName = "id")
-    private Users createdBy;
+    @JoinColumn(name = "faculty_id", referencedColumnName = "id")
+    private Faculties faculty;
 
-    @ManyToOne
-    @JoinColumn(name = "updated_by", referencedColumnName = "id")
-    private Users updatedBy;
-
-    @Column(name="created_at")
+    @Column(name = "created_by")
+    private Long createdBy;
+    @Column(name = "updated_by")
+    private Long updatedBy;
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
 }
