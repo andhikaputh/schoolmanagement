@@ -29,13 +29,13 @@ public class ProgramController {
     }
 
     @Operation(summary = "Get Program by Id", description = "Find Program by Id")
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ProgramResponseDTO>> getProgramById(@PathVariable Long id){
         return ResponseEntity.ok(new ApiResponse<>(true, "success", programService.getProgramById(id)));
     }
 
     @Operation(summary = "Get Program by Name", description = "Find Program by Name")
-    @GetMapping("/name")
+    @GetMapping("/{name}")
     public ResponseEntity<ApiResponse<List<ProgramResponseDTO>>> getProgramByName(@PathVariable String name){
         return ResponseEntity.ok(new ApiResponse<>(true, "success", programService.getProgramByName(name)));
     }
@@ -48,14 +48,14 @@ public class ProgramController {
     }
 
     @Operation(summary = "Update a Program", description = "Updating a Program.")
-    @PutMapping("/update")
+    @PutMapping("/{update}")
     public ResponseEntity<ApiResponse<String>> updateProgram(@RequestBody Long id, @Valid ProgramRequestDTO request) {
         programService.updateProgram(id, request);
         return ResponseEntity.ok(new ApiResponse<>(true, "success update program by id : " + id, request.toString()));
     }
 
     @Operation(summary = "Delete a Program", description = "Delete a Program.")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{delete}")
     public ResponseEntity<ApiResponse<String>> deleteJurusanById(@RequestBody Long id) {
         programService.deleteProgram(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "success delete program with id : " + id, null));
