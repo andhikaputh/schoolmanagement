@@ -18,7 +18,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./database:/docker-entrypoint-initdb.d
@@ -27,13 +27,13 @@ services:
     image: redis:7
     container_name: schoolmanagement-redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:${REDIS_PORT}"
 
   redisinsight:
     image: redis/redisinsight:latest
-    container_name: redisinsight
+    container_name: schoolmanagement-redisinsight
     ports:
-      - "5540:5540"
+      - "${REDIS_INSIGHT_PORT}:${REDIS_INSIGHT_PORT}"
     depends_on:
       - redis
 
