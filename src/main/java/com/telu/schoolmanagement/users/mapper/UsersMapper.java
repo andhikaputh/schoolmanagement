@@ -28,11 +28,6 @@
                             users.getFaculty().getName()
                     ) : null)
 
-                    .courses(users.getCourse() != null ? new UsersResponseDTO.CourseSummary(
-                            users.getCourse().getId(),
-                            users.getCourse().getName()
-                    ) : null)
-
                     .createdBy(users.getCreatedBy() != null ? new GeneralCreatedUpdatedBy(
                             users.getCreatedBy().getId(),
                             users.getCreatedBy().getName()

@@ -24,7 +24,6 @@ public class UsersResponseDTO {
     private RoleSummary roles;
     private ProgramSummary program;
     private FacultySummary faculties;
-    private CourseSummary courses;
 
     private Boolean isActive;
     private LocalDate graduateAt;
@@ -49,16 +48,6 @@ public class UsersResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FacultySummary {
-        private Long id;
-        private String name;
-    }
-
-    //    Getter for course id and name only
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CourseSummary {
         private Long id;
         private String name;
     }
