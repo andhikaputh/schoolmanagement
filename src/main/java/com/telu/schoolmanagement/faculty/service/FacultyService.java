@@ -1,5 +1,8 @@
 package com.telu.schoolmanagement.faculty.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.telu.schoolmanagement.common.constant.AppConstant;
+import com.telu.schoolmanagement.common.redis.RedisCacheUtil;
 import com.telu.schoolmanagement.faculty.dto.FacultyRequestDTO;
 import com.telu.schoolmanagement.faculty.dto.FacultyResponseDTO;
 import com.telu.schoolmanagement.faculty.mapper.FacultyMapper;
@@ -22,16 +25,43 @@ public class FacultyService {
     private FacultyRepository facultyRepository;
 
     @Autowired
+    RedisCacheUtil redisCacheUtil;
+
+    @Autowired
     private UsersRepository usersRepository;
 
     public List<FacultyResponseDTO> getAllFaculty(){
-        return facultyRepository.findAll().stream()
+        List<FacultyResponseDTO> redisData = redisCacheUtil.getCachedList(
+                AppConstant.REDIS_GETALL_FACULTY,
+                new TypeReference<List<FacultyResponseDTO>>() {}
+        );
+        System.out.println("Faculty from redis "+ redisData);
+
+        if (redisData != null) return redisData;
+
+        System.out.println("Call data from DB");
+        var result = facultyRepository.findAll().stream()
                 .map(FacultyMapper::toDTO)
                 .toList();
+
+        redisCacheUtil.cacheValue(AppConstant.REDIS_GETALL_FACULTY,result);
+        return result;
     }
 
     public FacultyResponseDTO getFacultyById(Long id){
-       return FacultyMapper.toDTO(facultyRepository.findById(id).orElseThrow());
+       String redisKey = "faculty::"+id;
+       FacultyResponseDTO redisData = redisCacheUtil.getCachedValue(
+               AppConstant.REDIS_GETALL_FACULTY,
+               FacultyResponseDTO.class
+       );
+
+       if(redisData !=null) return redisData;
+
+        System.out.println("call data from DB");
+        FacultyResponseDTO result = FacultyMapper.toDTO(facultyRepository.findById(id).orElseThrow());
+        redisCacheUtil.cacheValue(redisKey,result);
+
+        return result;
     }
 
     public List<FacultyResponseDTO> getFacultyByName(String query){
@@ -41,6 +71,8 @@ public class FacultyService {
     }
 
     public void createFaculty(FacultyRequestDTO requestDTO, Long userId) {
+        deleteAllFacultyCache();
+
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found."));
 
@@ -60,6 +92,8 @@ public class FacultyService {
     }
 
     public void deleteFacultyById(Long id) {
+        deleteAllFacultyIDCache(id);
+
         if (!facultyRepository.existsById(id)) {
             throw new EntityNotFoundException("Faculty with id " + id + " not found.");
         }
@@ -67,6 +101,8 @@ public class FacultyService {
     }
 
     public void updateFaculty(Long id, FacultyRequestDTO requestDTO) {
+        deleteAllFacultyIDCache(id);
+
         Faculties newFaculty = facultyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Faculty with ID " + id + " not found."));
 
@@ -75,4 +111,12 @@ public class FacultyService {
         facultyRepository.save(newFaculty);
     }
 
+    public void deleteAllFacultyCache(){
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_FACULTY);
+    }
+
+    public void deleteAllFacultyIDCache(Long id){
+        deleteAllFacultyCache();
+        redisCacheUtil.deleteCache("jurusan::"+id);
+    }
 }
