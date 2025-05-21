@@ -1,9 +1,6 @@
 package com.telu.schoolmanagement.users.dto;
 
 import com.telu.schoolmanagement.common.response.GeneralCreatedUpdatedBy;
-import com.telu.schoolmanagement.courses.model.Courses;
-import com.telu.schoolmanagement.faculty.model.Faculties;
-import com.telu.schoolmanagement.roles.model.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

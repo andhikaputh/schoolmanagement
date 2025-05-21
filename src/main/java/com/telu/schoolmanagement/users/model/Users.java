@@ -1,8 +1,5 @@
 package com.telu.schoolmanagement.users.model;
 
-import com.telu.schoolmanagement.common.response.GeneralCreatedUpdatedBy;
-import com.telu.schoolmanagement.common.util.Util;
-import com.telu.schoolmanagement.courses.model.Courses;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.program.model.Programs;
 import com.telu.schoolmanagement.roles.model.Roles;
@@ -41,10 +38,6 @@ public class Users {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     private Faculties faculty;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", referencedColumnName = "id")
-    private Courses course;
 
     private Boolean isActive;
     private LocalDate graduateAt;

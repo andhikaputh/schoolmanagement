@@ -1,7 +1,5 @@
 package com.telu.schoolmanagement.users.service;
 
-import com.telu.schoolmanagement.courses.model.Courses;
-import com.telu.schoolmanagement.courses.repository.CoursesRepository;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
 import com.telu.schoolmanagement.program.model.Programs;
@@ -34,9 +32,6 @@ public class UsersService {
 
     @Autowired
     private FacultyRepository facultyRepository;
-
-    @Autowired
-    private CoursesRepository coursesRepository;
 
     @Autowired
     private ProgramRepository programRepository;
@@ -82,7 +77,6 @@ public class UsersService {
         Roles roles = findRoleById(req.getRoles());
         Programs programs = findProgramById(req.getProgram());
         Faculties faculties = findFacultyById(req.getFaculties());
-        Courses courses = findCourseById(req.getCourses());
 
         newUser.setNip(req.getNip());
         newUser.setPassword(passwordEncoder.encode(req.getPassword()));
@@ -91,7 +85,6 @@ public class UsersService {
         newUser.setProgram(programs);
 
         newUser.setFaculty(faculties);
-        newUser.setCourse(courses);
         newUser.setIsActive(req.getIsActive());
         newUser.setGraduateAt(req.getGraduateAt());
         newUser.setUpdatedBy(updatedBy);
@@ -118,7 +111,7 @@ public class UsersService {
 
     private Programs findProgramById(Long id) {
         return programRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Course ID " + id + " doesn't exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Program ID " + id + " doesn't exist"));
     }
 
     private Faculties findFacultyById(Long id) {
@@ -126,8 +119,4 @@ public class UsersService {
                 .orElseThrow(() -> new EntityNotFoundException("Faculty ID " + id + " doesn't exist"));
     }
 
-    private Courses findCourseById(Long id) {
-        return coursesRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Course ID " + id + " doesn't exist"));
-    }
 }
