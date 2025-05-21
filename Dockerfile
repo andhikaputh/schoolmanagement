@@ -13,4 +13,6 @@ WORKDIR /app
 
 COPY --from=builder /app/target/*.jar app.jar
 
+COPY .env .env
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
