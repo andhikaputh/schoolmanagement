@@ -4,31 +4,53 @@ A Spring Boot application for managing school data.
 
 ## Prerequisites
 
+- [Makefile](https://www.gnu.org/software/make/)
 - [Docker](https://www.docker.com/products/docker-desktop)
-- `.env` file in the project root (based on `.env.example`)
+- `.env.local` and/or `.env.staging` file in the project root (based on `.env.example`)
 
-## Start the application (with Docker)
+## Start the Application
+
+### Local Environment
 
 ```
-docker-compose up --build
+make run-local
 ```
 
 This will start:
+
 - Spring Boot app
 - PostgreSQL
 - Redis
 - RedisInsight
 
-For more information on Redis, see [this file](src/main/java/com/telu/schoolmanagement/common/redis/redis.md)
-
-## Stop application
+### Staging Environment
 
 ```
-docker-compose down
+make run-staging
 ```
-If you want to stop application and remove volumes on Docker use:
 
-(this will also remove all changes in PostgreSQL and Redis)
+This will start:
+
+- Spring Boot app
+- Redis
+- RedisInsight
+
+As for the database in the staging environment, it is managed using Supabase.
+
+For more information on Redis usage on this project, see [this file](src/main/java/com/telu/schoolmanagement/common/redis/redis.md).
+
+## Delete Application Volumes in Docker
+
+### Local Environment
+
+(This will also remove all changes in PostgreSQL and Redis)
+
 ```
-docker-compose down -v
+make reset-local
+```
+
+### Staging Environment
+
+```
+make reset-staging
 ```
