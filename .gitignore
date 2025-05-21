@@ -6,8 +6,6 @@ target/
 .env
 .gitignore
 
-.gitignore
-
 ### STS ###
 .apt_generated
 .classpath
