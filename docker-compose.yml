@@ -22,6 +22,3 @@ services:
       - "${REDIS_INSIGHT_PORT}:${REDIS_INSIGHT_PORT}"
     depends_on:
       - redis
-
-volumes:
-  db-data:
