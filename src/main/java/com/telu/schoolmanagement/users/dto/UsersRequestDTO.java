@@ -19,7 +19,9 @@ public class UsersRequestDTO {
     @NotBlank(message = "Name Users cannot be blank")
     private String name;
 
-    // Role, Program
+    private Long roles;
+    private Long program;
+    private Long faculties;
 
     private Boolean isActive;
     private LocalDate graduateAt;
