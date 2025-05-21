@@ -1,5 +1,9 @@
 package com.telu.schoolmanagement.users.dto;
 
+import com.telu.schoolmanagement.common.response.GeneralCreatedUpdatedBy;
+import com.telu.schoolmanagement.courses.model.Courses;
+import com.telu.schoolmanagement.faculty.model.Faculties;
+import com.telu.schoolmanagement.roles.model.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,16 +19,57 @@ import java.time.LocalDateTime;
 public class UsersResponseDTO {
     private Long id;
     private String nip;
-    private String password;
     private String name;
 
-    // Role, Program
+    private RoleSummary roles;
+    private ProgramSummary program;
+    private FacultySummary faculties;
+    private CourseSummary courses;
 
     private Boolean isActive;
     private LocalDate graduateAt;
-    private Long createdBy;
-    private Long updatedBy;
+    private GeneralCreatedUpdatedBy createdBy;
+    private GeneralCreatedUpdatedBy updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    //    Getter for role id and name only
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RoleSummary {
+        private Long id;
+        private String name;
+    }
+
+    //    Getter for faculty id and name only
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FacultySummary {
+        private Long id;
+        private String name;
+    }
+
+    //    Getter for course id and name only
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CourseSummary {
+        private Long id;
+        private String name;
+    }
+
+    //    Getter for program id and name only
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProgramSummary {
+        private Long id;
+        private String name;
+    }
 }

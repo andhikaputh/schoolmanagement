@@ -1,5 +1,9 @@
 package com.telu.schoolmanagement.users.dto;
 
+import com.telu.schoolmanagement.common.response.GeneralCreatedUpdatedBy;
+import com.telu.schoolmanagement.courses.model.Courses;
+import com.telu.schoolmanagement.faculty.model.Faculties;
+import com.telu.schoolmanagement.roles.model.Roles;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -19,7 +23,10 @@ public class UsersRequestDTO {
     @NotBlank(message = "Name Users cannot be blank")
     private String name;
 
-    // Role, Program
+    private Long roles;
+    private Long program;
+    private Long faculties;
+    private Long courses;
 
     private Boolean isActive;
     private LocalDate graduateAt;
