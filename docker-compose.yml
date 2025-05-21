@@ -7,21 +7,7 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
       - redis
-
-  db:
-    image: postgres:15
-    container_name: schoolmanagement-db
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "${DB_PORT}:${DB_PORT}"
-    volumes:
-      - db-data:/var/lib/postgresql/data
-      - ./database:/docker-entrypoint-initdb.d
 
   redis:
     image: redis:7
