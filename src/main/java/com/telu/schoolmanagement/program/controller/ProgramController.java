@@ -25,7 +25,8 @@ public class ProgramController {
     @Operation(summary = "Get All Program", description = "Show All Program Registered")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProgramResponseDTO>>> getAllProgram(){
-        return ResponseEntity.ok(new ApiResponse<>(true, "success", programService.getAllProgram()));
+        List<ProgramResponseDTO> jurusanResponseDTO = programService.getAllProgram();
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", jurusanResponseDTO));
     }
 
     @Operation(summary = "Get Program by Id", description = "Find Program by Id")
