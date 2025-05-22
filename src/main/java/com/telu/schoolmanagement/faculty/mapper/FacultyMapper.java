@@ -10,12 +10,12 @@ public class FacultyMapper {
                 .id(faculty.getId())
                 .facultyName(faculty.getName())
                 .createdBy(new GeneralCreatedUpdatedBy(
-                        faculty.getCreatedBy(),
-                        "nunggu om"
+                        faculty.getCreatedBy().getId(),
+                        faculty.getCreatedBy().getName()
                 ))
                 .updatedBy(new GeneralCreatedUpdatedBy(
-                        faculty.getUpdatedBy(),
-                        "nunggu roles"
+                        faculty.getUpdatedBy().getId(),
+                        faculty.getCreatedBy().getName()
                 ))
                 .createdAt(faculty.getCreatedAt())
                 .updatedAt(faculty.getUpdatedAt())

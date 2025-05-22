@@ -5,6 +5,9 @@ target/
 !**/src/test/**/target/
 .env
 
+.env.local
+.env.staging
+
 .gitignore
 
 ### STS ###

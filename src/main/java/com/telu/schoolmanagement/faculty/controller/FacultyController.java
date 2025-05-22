@@ -43,8 +43,8 @@ public class FacultyController {
 
     @Operation(summary = "Create a new faculty", description = "Adding new faculty.")
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> createFaculty(@RequestBody @Valid FacultyRequestDTO request) {
-        facultyService.createFaculty(request);
+    public ResponseEntity<ApiResponse<String>> createFaculty(@RequestBody @Valid FacultyRequestDTO request, @RequestParam Long userId) {
+        facultyService.createFaculty(request,userId);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", request.toString()));
     }
 
@@ -52,13 +52,13 @@ public class FacultyController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> updateFaculty(@PathVariable Long id, @RequestBody @Valid FacultyRequestDTO request) {
         facultyService.updateFaculty(id, request);
-        return ResponseEntity.ok(new ApiResponse<>(true, "success update jurusan with id" + id, request.toString()));
+        return ResponseEntity.ok(new ApiResponse<>(true, "Update success with ID " + id, request.toString()));
     }
 
     @Operation(summary = "Delete faculty", description = "Delete faculty by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> deleteJurusanById(@PathVariable Long id) {
         facultyService.deleteFacultyById(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success delete with id: " + id, null));
+        return ResponseEntity.ok(new ApiResponse<>(true, "Success delete with ID " + id, null));
     }
 }

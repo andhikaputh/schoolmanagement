@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.faculty.model;
 
+import com.telu.schoolmanagement.users.model.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +20,13 @@ public class Faculties {
     private Long id;
     private String name;
 
-    @Column(name= "created_by")
-    private Long createdBy;
+    @ManyToOne
+    @JoinColumn(name= "created_by", referencedColumnName = "id")
+    private Users createdBy;
 
-    @Column(name="updated_by")
-    private Long updatedBy;
+    @ManyToOne
+    @JoinColumn(name = "updated_by", referencedColumnName = "id")
+    private Users updatedBy;
 
     @Column(name="created_at")
     private LocalDateTime createdAt;

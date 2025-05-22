@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${APP_PORT}
 
 spring:
   datasource:
@@ -13,8 +13,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
   cache:
     type: redis
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}

@@ -1,16 +1,15 @@
 package com.telu.schoolmanagement.users.controller;
 
 import com.telu.schoolmanagement.common.response.ApiResponse;
+import com.telu.schoolmanagement.users.dto.UsersRequestDTO;
 import com.telu.schoolmanagement.users.dto.UsersResponseDTO;
 import com.telu.schoolmanagement.users.service.UsersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -60,4 +59,17 @@ public class UsersController {
         return ResponseEntity.ok(new ApiResponse<>(true, "success", usersService.getUsersByGrad(date)));
     }
 
+    @Operation(summary = "Updating user by Id")
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<String>> updateUsers(@RequestBody @Valid UsersRequestDTO req, @PathVariable Long id) {
+        usersService.updateUsers(id, req);
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success Updating User"));
+    }
+
+    @Operation(summary = "Deleting user by Id")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<String>> deleteUsers(@PathVariable Long id) {
+        usersService.deleteUsers(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success Deleting User"));
+    }
 }

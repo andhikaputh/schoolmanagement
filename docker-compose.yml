@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    container_name: schoolmanagement-app
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7
+    container_name: schoolmanagement-redis
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: schoolmanagement-redisinsight
+    ports:
+      - "${REDIS_INSIGHT_PORT}:${REDIS_INSIGHT_PORT}"
+    depends_on:
+      - redis
