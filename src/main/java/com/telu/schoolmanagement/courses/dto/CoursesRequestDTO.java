@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class CoursesRequestDTO {
     private String name;
     private int sks;
-    private int programId;
+    private Long programId;
     private Long createdBy;
     private Long updatedBy;
 }

@@ -1,6 +1,8 @@
 package com.telu.schoolmanagement.courses.model;
 
 import com.telu.schoolmanagement.common.util.Util;
+import com.telu.schoolmanagement.program.model.Programs;
+import com.telu.schoolmanagement.users.model.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,15 +25,16 @@ public class Courses {
     private String slug;
     private int sks;
 
-    //    refer to programs table
-    @Column(name = "program_id")
-    private int programId;
+    @ManyToOne
+    @JoinColumn(name = "program_id", referencedColumnName = "id")
+    private Programs programs;
 
-    //    refer to users table
-    @Column(name = "created_by")
-    private Long createdBy;
-    @Column(name = "updated_by")
-    private Long updatedBy;
+    @ManyToOne
+    @JoinColumn(name="created_by", referencedColumnName = "id")
+    private Users createdBy;
+    @ManyToOne
+    @JoinColumn(name="updated_by", referencedColumnName = "id")
+    private Users updatedBy;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

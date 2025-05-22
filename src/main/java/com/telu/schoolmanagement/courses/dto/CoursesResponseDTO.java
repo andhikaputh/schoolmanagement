@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.courses.dto;
 
+import com.telu.schoolmanagement.common.response.GeneralCreatedUpdatedBy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +18,8 @@ public class CoursesResponseDTO {
     private String slug;
     private int sks;
     private int programId;
-    private Long createdBy;
-    private Long updatedBy;
+    private GeneralCreatedUpdatedBy createdBy;
+    private GeneralCreatedUpdatedBy updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

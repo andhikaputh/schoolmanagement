@@ -5,6 +5,10 @@ import com.telu.schoolmanagement.courses.dto.CoursesResponseDTO;
 import com.telu.schoolmanagement.courses.mapper.CoursesMapper;
 import com.telu.schoolmanagement.courses.model.Courses;
 import com.telu.schoolmanagement.courses.repository.CoursesRepository;
+import com.telu.schoolmanagement.program.model.Programs;
+import com.telu.schoolmanagement.program.repository.ProgramRepository;
+import com.telu.schoolmanagement.users.model.Users;
+import com.telu.schoolmanagement.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,12 @@ public class CoursesService {
 
     @Autowired
     private CoursesRepository coursesRepository;
+
+    @Autowired
+    private ProgramRepository programRepository;
+
+    @Autowired
+    private UsersRepository usersRepository;
 
     public List<CoursesResponseDTO> getAllCourses() {
         return coursesRepository.findAll()
@@ -47,14 +57,20 @@ public class CoursesService {
     }
 
     public void createCourse(CoursesRequestDTO request){
+        Programs program = programRepository.findById(request.getProgramId())
+                .orElseThrow(() -> new EntityNotFoundException("Can't find program with ID "+request.getProgramId()));
+
+        Users user = usersRepository.findById(request.getCreatedBy())
+                .orElseThrow(() -> new EntityNotFoundException("Can't find user with ID "+request.getCreatedBy()));
+
         Courses courses = Courses.builder()
                 .name(request.getName())
                 .sks(request.getSks())
-                .programId(request.getProgramId())  // To-be confirmed
-                .createdBy(request.getCreatedBy())  // To-be confirmed
-                .updatedBy(request.getCreatedBy())  // To-be confirmed
-                .createdAt(LocalDateTime.now())     // To-be confirmed
-                .updatedAt(LocalDateTime.now())     // To-be confirmed
+                .programs(program)
+                .createdBy(user)
+                .updatedBy(user)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         coursesRepository.save(courses);
@@ -64,11 +80,16 @@ public class CoursesService {
         Courses course = coursesRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find course with ID "+id));
 
-        //TODO update when programs module has developed
+        Programs program = programRepository.findById(request.getProgramId())
+                .orElseThrow(() -> new EntityNotFoundException("Can't find program with ID "+request.getProgramId()));
+
+        Users user = usersRepository.findById(request.getUpdatedBy())
+                .orElseThrow(() -> new EntityNotFoundException("Can't find user with ID "+request.getUpdatedBy()));
+
         course.setName(request.getName());
         course.setSks(request.getSks());
-        course.setProgramId(request.getProgramId());    // To-be confirmed
-        course.setUpdatedBy(request.getUpdatedBy());    // To-be confirmed
+        course.setPrograms(program);    // To-be confirmed
+        course.setUpdatedBy(user);    // To-be confirmed
         course.setUpdatedAt(LocalDateTime.now());       // To-be confirmed
 
         coursesRepository.save(course);
