@@ -31,9 +31,6 @@ public class ProgramService {
     @Autowired
     RedisCacheUtil redisCacheUtil;
 
-    @Autowired
-    AppConfig appConfig;
-
     public List<ProgramResponseDTO> getAllProgram() {
         List<ProgramResponseDTO> redisdata = redisCacheUtil.getCachedList(
                 AppConstant.REDIS_GET_ALL_PROGRAM_LIST,

@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.program.dto;
 
+import com.telu.schoolmanagement.faculty.dto.FacultyResponseDTO;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +16,9 @@ import java.time.LocalDateTime;
 public class ProgramResponseDTO implements Serializable {
     private Long id;
     private String name;
-    private Faculties faculties;
+    private FacultyResponseDTO faculties;
     private Long createdBy;
     private Long updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }

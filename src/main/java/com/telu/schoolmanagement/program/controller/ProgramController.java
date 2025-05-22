@@ -30,7 +30,7 @@ public class ProgramController {
     }
 
     @Operation(summary = "Get Program by Id", description = "Find Program by Id")
-    @GetMapping("/{id}")
+    @GetMapping("/id={id}")
     public ResponseEntity<ApiResponse<ProgramResponseDTO>> getProgramById(@PathVariable Long id){
         return ResponseEntity.ok(new ApiResponse<>(true, "success", programService.getProgramById(id)));
     }

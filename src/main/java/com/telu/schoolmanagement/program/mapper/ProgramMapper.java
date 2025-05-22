@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.program.mapper;
 
+import com.telu.schoolmanagement.faculty.mapper.FacultyMapper;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.program.dto.ProgramResponseDTO;
 import com.telu.schoolmanagement.program.model.Programs;
@@ -10,7 +11,7 @@ public class ProgramMapper {
                 .id(programs.getId())
                 .name(programs.getName())
                 .faculties(
-                        programs.getFaculty()
+                        FacultyMapper.toDTO(programs.getFaculty())
                 )
                 .createdBy(programs.getCreatedBy())
                 .updatedBy(programs.getUpdatedBy())
