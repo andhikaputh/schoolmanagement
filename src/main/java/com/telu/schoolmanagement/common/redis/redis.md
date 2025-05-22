@@ -13,6 +13,21 @@ To use Redis, you need to install Redis on your system.
 Since we are using Docker for this project, the Redis database and RedisInsight is already installed.
 RedisInsight is used to view the cached values stored on Redis database. You can access RedisInsight at `localhost:5540`.
 
+## Implementation
+
+First, you need to implement the Serializable interface in the class you want to cache.
+
+Example:
+
+```
+public class UserResponse implements Serializable {
+    private String name;
+    private String email;
+}
+```
+
+After that, you can use the methods on `RedisCacheUtil` class to cache the values in the Service layer.
+
 ## List of Methods
 
 ### `cacheValue(String key, T value)`
