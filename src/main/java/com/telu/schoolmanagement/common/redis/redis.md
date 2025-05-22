@@ -8,20 +8,25 @@ All values are stored as JSON strings.
 
 ## Installation
 
-To use Redis, you need to install Redis on your system. I recommend using Docker to install Redis.
+To use Redis, you need to install Redis on your system.
 
-Here is the command to install & run Redis using Docker:
+Since we are using Docker for this project, the Redis database and RedisInsight is already installed.
+RedisInsight is used to view the cached values stored on Redis database. You can access RedisInsight at `localhost:5540`.
+
+## Implementation
+
+First, you need to implement the Serializable interface in the class you want to cache.
+
+Example:
 
 ```
-docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+public class UserResponse implements Serializable {
+    private String name;
+    private String email;
+}
 ```
 
-As you can see, there are two ports exposed:
-
-- `6379` for Redis itself
-- `8001` for RedisInsight
-
-RedisInsight is used to view the cached values stored on Redis. You can access RedisInsight at `REDIS_HOST:8001`.
+After that, you can use the methods on `RedisCacheUtil` class to cache the values in the Service layer.
 
 ## List of Methods
 
