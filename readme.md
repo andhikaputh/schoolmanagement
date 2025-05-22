@@ -4,11 +4,20 @@ A Spring Boot application for managing school data.
 
 ## Prerequisites
 
-- [Makefile](https://www.gnu.org/software/make/)
+- [Makefile](#make-installation)
 - [Docker](https://www.docker.com/products/docker-desktop)
 - `.env.local` and/or `.env.staging` file in the project root (based on `.env.example`)
 
 ## Start the Application
+
+### Make Installation
+
+Since we will be using Makefile to run the application, you need to install it first:
+- On Windows, you can install it using [Chocolatey](https://chocolatey.org/install).
+After installing Chocolatey, you can run `choco install make` to install Makefile.
+- On Linux, you can install it using `sudo apt-get install make`.
+
+And then you can run the application in bash terminal using these commands below.
 
 ### Local Environment
 

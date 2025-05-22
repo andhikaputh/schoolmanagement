@@ -11,7 +11,8 @@ All values are stored as JSON strings.
 To use Redis, you need to install Redis on your system.
 
 Since we are using Docker for this project, the Redis database and RedisInsight is already installed.
-RedisInsight is used to view the cached values stored on Redis database. You can access RedisInsight at `localhost:5540`.
+RedisInsight is used to view the cached values stored on Redis database.
+You can access RedisInsight at `localhost:5540` and connect to Redis Database with `redis://default@redis:6379`.
 
 ## Implementation
 
