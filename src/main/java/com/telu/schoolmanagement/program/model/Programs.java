@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.program.model;
 
+import com.telu.schoolmanagement.common.util.Util;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,4 +35,11 @@ public class Programs {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    private String slug;
+
+    @PrePersist
+    @PreUpdate
+    public void setSlugAuto(){
+        this.slug = Util.setSlugFromName(this.name);
+    }
 }
