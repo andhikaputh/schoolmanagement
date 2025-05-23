@@ -97,7 +97,7 @@ public class ProgramService {
     }
 
     public void deleteProgram(Long id) {
-
+        deleteAllProgramCache(id);
         if (!programRepository.existsById(id)) {
             throw new EntityNotFoundException("Program with id " + id + " doesn't exist");
         }
@@ -106,6 +106,7 @@ public class ProgramService {
     }
 
     public void updateProgram(Long id, ProgramRequestDTO request) {
+        deleteAllProgramCache(id);
         Programs newPrograms = programRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Program with Id " + id + " doesn't exist"));
 
         Faculties faculties = facultyRepository.findById(request.getFacultyId())
