@@ -1,5 +1,8 @@
 package com.telu.schoolmanagement.courses.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.telu.schoolmanagement.common.constant.AppConstant;
+import com.telu.schoolmanagement.common.redis.RedisCacheUtil;
 import com.telu.schoolmanagement.courses.dto.CoursesRequestDTO;
 import com.telu.schoolmanagement.courses.dto.CoursesResponseDTO;
 import com.telu.schoolmanagement.courses.mapper.CoursesMapper;
@@ -28,19 +31,55 @@ public class CoursesService {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private RedisCacheUtil redisCacheUtil;
+
     public List<CoursesResponseDTO> getAllCourses() {
-        return coursesRepository.findAll()
+        List<CoursesResponseDTO> cachedCourses = redisCacheUtil.getCachedList(
+                AppConstant.REDIS_GETALL_COURSE,
+                new TypeReference<List<CoursesResponseDTO>>() {}
+        );
+
+        if (cachedCourses != null) {
+            return cachedCourses;
+        }
+
+        List<CoursesResponseDTO> courses = coursesRepository.findAll()
                 .stream()
                 .map(CoursesMapper::toDTO)
                 .toList();
+
+        redisCacheUtil.cacheValue(
+                AppConstant.REDIS_GETALL_COURSE,
+                courses
+        );
+
+        return courses;
     }
 
     public CoursesResponseDTO getCourseById(Long id) {
-        return coursesRepository.findById(id)
+        CoursesResponseDTO cachedCourse = redisCacheUtil.getCachedValue(
+                AppConstant.REDIS_GETCOURSE_BY_ID+ id,
+                CoursesResponseDTO.class
+        );
+
+        if (cachedCourse != null) {
+            return cachedCourse;
+        }
+
+        CoursesResponseDTO course = coursesRepository.findById(id)
                 .map(CoursesMapper::toDTO)
-                .orElse(null);
+                .orElseThrow(() -> new EntityNotFoundException("Can't find course with ID "+id));
+
+        redisCacheUtil.cacheValue(
+                AppConstant.REDIS_GETCOURSE_BY_ID + id,
+                course
+        );
+
+        return course;
     }
 
+    //TODO: Research if this is the best practice for searching
     public List<CoursesResponseDTO> searchCourses(Long id, String name) {
         if (id != null && name == null) {
             return coursesRepository.findById(id)
@@ -57,6 +96,8 @@ public class CoursesService {
     }
 
     public void createCourse(CoursesRequestDTO request){
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
+
         Programs program = programRepository.findById(request.getProgramId())
                 .orElseThrow(() -> new EntityNotFoundException("Can't find program with ID "+request.getProgramId()));
 
@@ -77,6 +118,9 @@ public class CoursesService {
     }
 
     public void updateCourse(Long id, CoursesRequestDTO request){
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE_BY_ID + id);
+
         Courses course = coursesRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find course with ID "+id));
 
@@ -96,6 +140,9 @@ public class CoursesService {
     }
 
     public void deleteCourse(Long id){
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE_BY_ID + id);
+
         if (!coursesRepository.existsById(id)){
             throw new EntityNotFoundException("Can't find course with ID "+id);
         }

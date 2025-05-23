@@ -26,6 +26,7 @@ public class CoursesController {
         return ResponseEntity.ok(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
     }
 
+    //TODO: Research the best practice for url mapping
     @Operation(summary = "Search course by id or name")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> searchCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
