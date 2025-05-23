@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.common.security.jwt;
 
+import com.telu.schoolmanagement.common.appconfig.AppConfig;
 import com.telu.schoolmanagement.users.model.Users;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.function.Function;
 public class JWTConfig {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 jam
-    private static final String SECRET_KEY = System.getenv("JWT_CONFIG");
+    private static final String SECRET_KEY = AppConfig.dotenv.get("JWT_CONFIG");
 
     private Key getSignInKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());

@@ -1,5 +1,9 @@
 package com.telu.schoolmanagement.program.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.telu.schoolmanagement.common.appconfig.AppConfig;
+import com.telu.schoolmanagement.common.redis.RedisCacheUtil;
+import com.telu.schoolmanagement.common.constant.AppConstant;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
 import com.telu.schoolmanagement.program.dto.ProgramRequestDTO;
@@ -24,14 +28,48 @@ public class ProgramService {
     @Autowired
     private FacultyRepository facultyRepository;
 
+    @Autowired
+    RedisCacheUtil redisCacheUtil;
+
     public List<ProgramResponseDTO> getAllProgram() {
-        return programRepository.findAll().stream()
+        List<ProgramResponseDTO> redisdata = redisCacheUtil.getCachedList(
+                AppConstant.REDIS_GET_ALL_PROGRAM_LIST,
+                new TypeReference<List<ProgramResponseDTO>>() {}
+        );
+
+        System.out.println("Data di redis :" + redisdata);
+
+        //if data available
+        if(redisdata != null) return redisdata;
+
+        //if no data in redis
+        System.out.println(" Call data form DB");
+        var result = programRepository.findAll().stream()
                 .map(ProgramMapper::toDTO)
                 .toList();
+
+        redisCacheUtil.cacheValue(AppConstant.REDIS_GET_ALL_PROGRAM_LIST, result);
+        return result;
+
     }
 
     public ProgramResponseDTO getProgramById(Long id) {
-        return ProgramMapper.toDTO(programRepository.findById(id).orElseThrow());
+
+        String redisKey = "program::" + id;
+
+        ProgramResponseDTO redisdata = redisCacheUtil.getCachedList(
+                AppConstant.REDIS_GET_ALL_PROGRAM_LIST,
+                new TypeReference<ProgramResponseDTO>() {}
+        );System.out.println("Data di redis :" + redisdata);
+
+        //if data avaible
+        if(redisdata != null) return redisdata;
+
+        //if no data in redis
+        System.out.println(" Call data form DB");
+        var result = ProgramMapper.toDTO(programRepository.findById(id).orElseThrow());
+        redisCacheUtil.cacheValue(redisKey, result);
+        return result;
     }
 
     public List<ProgramResponseDTO> getProgramByName(String name) {
@@ -42,6 +80,7 @@ public class ProgramService {
 
     public void createProgram(ProgramRequestDTO request) {
 
+        deleteAllProgramCache();
         Faculties faculties = facultyRepository.findById(request.getFacultyId())
                 .orElseThrow(() -> new RuntimeException("faculty_id not found"));
 
@@ -58,6 +97,7 @@ public class ProgramService {
     }
 
     public void deleteProgram(Long id) {
+        deleteAllProgramCache(id);
         if (!programRepository.existsById(id)) {
             throw new EntityNotFoundException("Program with id " + id + " doesn't exist");
         }
@@ -66,7 +106,7 @@ public class ProgramService {
     }
 
     public void updateProgram(Long id, ProgramRequestDTO request) {
-
+        deleteAllProgramCache(id);
         Programs newPrograms = programRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Program with Id " + id + " doesn't exist"));
 
         Faculties faculties = facultyRepository.findById(request.getFacultyId())
@@ -80,5 +120,21 @@ public class ProgramService {
         newPrograms.setUpdatedBy(request.getUpdatedBy());
 
         programRepository.save(newPrograms);
+    }
+
+    /**
+     * Delete all Program list cache.
+     */
+    public void deleteAllProgramCache() {
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GET_ALL_PROGRAM_LIST);
+    }
+
+    /**
+     * Delete all Program list cache and specific Program by ID.
+     * @param id the ID of the Program to delete from cache
+     */
+    public void deleteAllProgramCache(Long id) {
+        deleteAllProgramCache();
+        redisCacheUtil.deleteCache("program::" + id);
     }
 }
