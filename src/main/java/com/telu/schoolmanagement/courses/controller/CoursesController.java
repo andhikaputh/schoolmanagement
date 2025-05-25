@@ -4,14 +4,19 @@ import com.telu.schoolmanagement.common.response.ApiResponse;
 import com.telu.schoolmanagement.courses.dto.CoursesRequestDTO;
 import com.telu.schoolmanagement.courses.dto.CoursesResponseDTO;
 import com.telu.schoolmanagement.courses.service.CoursesService;
+import com.telu.schoolmanagement.common.request.CreateGroup;
+import com.telu.schoolmanagement.common.request.UpdateGroup;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//TODO handle createdBy and updatedBy by login user
+//TODO check user role access before allow to create, update, delete course
 @Tag(name = "Courses Controller", description = "Endpoints for managing courses (CRUD operations)")
 @RestController
 @RequestMapping("/api/courses")
@@ -25,7 +30,7 @@ public class CoursesController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> findCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
         if (id == null && name == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
+            return ResponseEntity.ok(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
         }
         //TODO how cache this?
         //TODO how to handle if both id and name are provided
@@ -39,22 +44,20 @@ public class CoursesController {
 
     @Operation(summary = "Create a course")
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> createCourse(@RequestBody CoursesRequestDTO requestDTO){
-        //TODO add error handler
+    public ResponseEntity<ApiResponse<String>> createCourse(@RequestBody @Validated(CreateGroup.class) CoursesRequestDTO requestDTO){
         coursesService.createCourse(requestDTO);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success add new course"));
     }
 
     @Operation(summary = "Update a course")
-    @PutMapping("/update")
-    public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody CoursesRequestDTO requestDTO){
-        //TODO add error handler
+    @PutMapping
+    public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody @Validated(UpdateGroup.class) CoursesRequestDTO requestDTO){
         coursesService.updateCourse(id, requestDTO);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success update a course"));
     }
 
     @Operation(summary = "Delete a course")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<ApiResponse<String>> deleteCourse(@RequestParam Long id){
         //TODO add error handler
         coursesService.deleteCourse(id);

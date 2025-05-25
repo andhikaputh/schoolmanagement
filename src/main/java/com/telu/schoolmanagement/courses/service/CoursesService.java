@@ -79,7 +79,6 @@ public class CoursesService {
         return course;
     }
 
-    //TODO: Research if this is the best practice for searching
     public List<CoursesResponseDTO> searchCourses(Long id, String name) {
         if (id != null && name == null) {
             return coursesRepository.findById(id)
@@ -109,9 +108,7 @@ public class CoursesService {
                 .sks(request.getSks())
                 .programs(program)
                 .createdBy(user)
-                .updatedBy(user)
                 .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
 
         coursesRepository.save(courses);
@@ -132,9 +129,9 @@ public class CoursesService {
 
         course.setName(request.getName());
         course.setSks(request.getSks());
-        course.setPrograms(program);    // To-be confirmed
-        course.setUpdatedBy(user);    // To-be confirmed
-        course.setUpdatedAt(LocalDateTime.now());       // To-be confirmed
+        course.setPrograms(program);
+        course.setUpdatedBy(user);
+        course.setUpdatedAt(LocalDateTime.now());
 
         coursesRepository.save(course);
     }
