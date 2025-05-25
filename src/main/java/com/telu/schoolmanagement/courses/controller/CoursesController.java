@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Courses", description = "CRUD for Courses")
+@Tag(name = "Courses Controller", description = "Endpoints for managing courses (CRUD operations)")
 @RestController
 @RequestMapping("/api/courses")
 public class CoursesController {
@@ -20,20 +20,15 @@ public class CoursesController {
     @Autowired
     private CoursesService coursesService;
 
-    @Operation(summary = "Get all courses")
+    //TODO dirty code, need to clean up
+    @Operation(summary = "Get courses")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> getAllCourses() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
-    }
-
-    //TODO: Research the best practice for url mapping
-    @Operation(summary = "Search course by id or name")
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> searchCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> findCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
         if (id == null && name == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Request is not valid: both id and name are null", null));
+            return ResponseEntity.badRequest().body(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
         }
-
+        //TODO how cache this?
+        //TODO how to handle if both id and name are provided
         List<CoursesResponseDTO> courses = coursesService.searchCourses(id, name);
         if (courses != null && !courses.isEmpty()) {
             return ResponseEntity.ok(new ApiResponse<>(true, "success", courses));
