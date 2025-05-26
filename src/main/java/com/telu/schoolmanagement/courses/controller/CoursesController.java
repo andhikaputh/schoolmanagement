@@ -4,13 +4,11 @@ import com.telu.schoolmanagement.common.response.ApiResponse;
 import com.telu.schoolmanagement.courses.dto.CoursesRequestDTO;
 import com.telu.schoolmanagement.courses.dto.CoursesResponseDTO;
 import com.telu.schoolmanagement.courses.service.CoursesService;
-import com.telu.schoolmanagement.common.request.CreateGroup;
-import com.telu.schoolmanagement.common.request.UpdateGroup;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,14 +42,14 @@ public class CoursesController {
 
     @Operation(summary = "Create a course")
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> createCourse(@RequestBody @Validated(CreateGroup.class) CoursesRequestDTO requestDTO){
+    public ResponseEntity<ApiResponse<String>> createCourse(@RequestBody @Valid CoursesRequestDTO requestDTO){
         coursesService.createCourse(requestDTO);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success add new course"));
     }
 
     @Operation(summary = "Update a course")
     @PutMapping
-    public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody @Validated(UpdateGroup.class) CoursesRequestDTO requestDTO){
+    public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody @Valid CoursesRequestDTO requestDTO){
         coursesService.updateCourse(id, requestDTO);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success update a course"));
     }
