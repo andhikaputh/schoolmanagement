@@ -13,18 +13,13 @@ public class CoursesMapper {
                 .name(courses.getName())
                 .slug(courses.getSlug())
                 .sks(courses.getSks())
-
-                //TODO change to ProgramResponseDTO after program merged to master
-                .program(courses.getPrograms() != null ? new CoursesResponseDTO.ProgramSummary(
-                        courses.getPrograms().getId(),
-                        courses.getPrograms().getName()
-                ) : null)
-
+                .program(
+                        ProgramMapper.toDTO(courses.getPrograms())
+                )
                 .createdBy(courses.getCreatedBy() != null ? GeneralCreatedUpdatedBy.builder()
                                 .id(courses.getCreatedBy().getId())
                                 .name(courses.getCreatedBy().getName())
                                 .build() : null)
-
                 .updatedBy(courses.getUpdatedBy() != null ? GeneralCreatedUpdatedBy.builder()
                                 .id(courses.getUpdatedBy().getId())
                                 .name(courses.getUpdatedBy().getName())

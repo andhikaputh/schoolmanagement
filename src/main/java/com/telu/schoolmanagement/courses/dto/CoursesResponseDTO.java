@@ -1,6 +1,7 @@
 package com.telu.schoolmanagement.courses.dto;
 
 import com.telu.schoolmanagement.common.response.GeneralCreatedUpdatedBy;
+import com.telu.schoolmanagement.program.dto.ProgramResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,21 +19,10 @@ public class CoursesResponseDTO implements Serializable {
     private String name;
     private String slug;
     private int sks;
-
-    //TODO change to ProgramResponseDTO after program merged to master
-    private ProgramSummary program;
+    private ProgramResponseDTO program;
     private GeneralCreatedUpdatedBy createdBy;
     private GeneralCreatedUpdatedBy updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ProgramSummary {
-        private Long id;
-        private String name;
-    }
 }
 
