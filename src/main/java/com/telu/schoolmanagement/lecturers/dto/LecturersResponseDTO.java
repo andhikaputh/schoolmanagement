@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class LecturersResponseDTO implements Serializable {
     private Long id;
     private String nidn;
-    private String user_id;
+    private Long user_id;
     private UserMinimalResponseDTO user;
     private FacultyMinimalResponseDTO faculty;
 }

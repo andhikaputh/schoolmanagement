@@ -1,5 +1,6 @@
 package com.telu.schoolmanagement.lecturers.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.users.model.Users;
 import jakarta.persistence.*;
@@ -21,21 +22,12 @@ public class Lecturers {
     private Long id;
     private String nidn;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     private Faculties faculty;
 
-    @ManyToOne
-    @JoinColumn(name = "updated_by", referencedColumnName = "id")
-    private Users updatedBy;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

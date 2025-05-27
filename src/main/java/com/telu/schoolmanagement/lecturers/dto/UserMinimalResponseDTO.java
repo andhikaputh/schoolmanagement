@@ -15,5 +15,4 @@ public class UserMinimalResponseDTO {
     private Long id;
     private String nip;
     private String name;
-    private String slug;
 }

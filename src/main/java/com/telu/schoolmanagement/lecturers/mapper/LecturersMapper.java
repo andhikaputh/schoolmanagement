@@ -10,6 +10,7 @@ public class LecturersMapper {
         return LecturersResponseDTO.builder()
                 .id(lecturer.getId())
                 .nidn(lecturer.getNidn())
+                .user_id(lecturer.getUser().getId())
                 .user(UserMinimalResponseDTO.builder()
                         .id(lecturer.getUser().getId())
                         .name(lecturer.getUser().getName())
@@ -18,7 +19,6 @@ public class LecturersMapper {
                 .faculty(FacultyMinimalResponseDTO.builder()
                         .id(lecturer.getFaculty().getId())
                         .name(lecturer.getFaculty().getName())
-                        .slug(lecturer.getFaculty().getSlug())
                         .build())
                 .build();
     }

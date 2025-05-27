@@ -87,8 +87,6 @@ public class LecturersService {
                 .user(user)
                 .nidn(requestDTO.getNidn())
                 .faculty(faculty)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
 
         lecturersRepository.save(lecturer);
@@ -118,8 +116,6 @@ public class LecturersService {
             lecturer.setNidn(requestDTO.getNidn());
         }
 
-        lecturer.setUpdatedAt(LocalDateTime.now());
-        lecturersRepository.save(lecturer);
     }
     public void deleteLecturer(Long id) {
         deleteLecturerCache(id);
