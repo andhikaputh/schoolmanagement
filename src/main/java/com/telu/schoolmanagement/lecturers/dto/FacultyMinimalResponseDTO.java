@@ -14,5 +14,4 @@ import java.time.LocalDateTime;
 public class FacultyMinimalResponseDTO {
     private Long id;
     private String name;
-    private String slug;
 }

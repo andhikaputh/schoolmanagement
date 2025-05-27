@@ -54,20 +54,7 @@ public class LecturersService {
         return result;
     }
 
-    public LecturersResponseDTO getLecturerById(Long id) {
-        String redisKey = "lecturer::" + id;
-        LecturersResponseDTO redisData = redisCacheUtil.getCachedValue(
-                redisKey,
-                LecturersResponseDTO.class
-        );
 
-        if (redisData != null) return redisData;
-
-        System.out.println("Call data lecture from DB");
-        LecturersResponseDTO result = LecturersMapper.toDTO(lecturersRepository.findById(id).orElseThrow());
-        redisCacheUtil.cacheValue(redisKey,result);
-        return result;
-    }
     public List<LecturersResponseDTO> searchLecturersByNidn(String nidn) {
         return lecturersRepository.findByNidnIgnoreCaseContaining(nidn)
                 .stream()
@@ -87,8 +74,6 @@ public class LecturersService {
                 .user(user)
                 .nidn(requestDTO.getNidn())
                 .faculty(faculty)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
 
         lecturersRepository.save(lecturer);
@@ -97,16 +82,16 @@ public class LecturersService {
     public void deleteAllLecturerCache(){
         redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_LECTURE);
     }
-    private void deleteLecturerCache(Long id) {
+    private void deleteLecturerCache(String nidn) {
         deleteAllLecturerCache();
-        redisCacheUtil.deleteCache("lecturer::" + id);
+        redisCacheUtil.deleteCache("lecturer::" + nidn);
     }
 
-    public void updateLecturer(Long id, LecturersRequestDTO requestDTO) {
-        deleteLecturerCache(id);
+    public void updateLecturer(String nidn, LecturersRequestDTO requestDTO) {
+        deleteLecturerCache(nidn);
 
-        Lecturers lecturer = lecturersRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Lecturer with ID " + id + " not found"));
+        Lecturers lecturer = lecturersRepository.findByNidn(nidn)
+                .orElseThrow(() -> new EntityNotFoundException("Lecturer with ID " + nidn + " not found"));
 
         if (requestDTO.getFacultyId() != null) {
             Faculties faculty = facultyRepository.findById(requestDTO.getFacultyId())
@@ -118,15 +103,12 @@ public class LecturersService {
             lecturer.setNidn(requestDTO.getNidn());
         }
 
-        lecturer.setUpdatedAt(LocalDateTime.now());
-        lecturersRepository.save(lecturer);
     }
-    public void deleteLecturer(Long id) {
-        deleteLecturerCache(id);
+    public void deleteLecturerByNidn(String nidn) {
+        deleteLecturerCache(nidn);
+        Lecturers lecturer = lecturersRepository.findByNidn(nidn)
+                .orElseThrow(() -> new EntityNotFoundException("Lecturer with NIDN " + nidn + " not found"));
 
-        if (!lecturersRepository.existsById(id)) {
-            throw new EntityNotFoundException("Lecturer with ID " + id + " not found");
-        }
-        lecturersRepository.deleteById(id);
+        lecturersRepository.delete(lecturer);
     }
 }
