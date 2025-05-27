@@ -6,13 +6,16 @@ import com.telu.schoolmanagement.courses.dto.CoursesResponseDTO;
 import com.telu.schoolmanagement.courses.service.CoursesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Courses", description = "CRUD for Courses")
+//TODO handle createdBy and updatedBy by login user
+//TODO check user role access before allow to create, update, delete course
+@Tag(name = "Courses Controller", description = "Endpoints for managing courses (CRUD operations)")
 @RestController
 @RequestMapping("/api/courses")
 public class CoursesController {
@@ -20,19 +23,15 @@ public class CoursesController {
     @Autowired
     private CoursesService coursesService;
 
-    @Operation(summary = "Get all courses")
+    //TODO dirty code, need to clean up
+    @Operation(summary = "Get courses")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> getAllCourses() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
-    }
-
-    @Operation(summary = "Search course by id or name")
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> searchCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> findCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
         if (id == null && name == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Request is not valid: both id and name are null", null));
+            return ResponseEntity.ok(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
         }
-
+        //TODO how cache this?
+        //TODO how to handle if both id and name are provided
         List<CoursesResponseDTO> courses = coursesService.searchCourses(id, name);
         if (courses != null && !courses.isEmpty()) {
             return ResponseEntity.ok(new ApiResponse<>(true, "success", courses));
@@ -43,22 +42,20 @@ public class CoursesController {
 
     @Operation(summary = "Create a course")
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> createCourse(@RequestBody CoursesRequestDTO requestDTO){
-        //TODO add error handler
+    public ResponseEntity<ApiResponse<String>> createCourse(@RequestBody @Valid CoursesRequestDTO requestDTO){
         coursesService.createCourse(requestDTO);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success add new course"));
     }
 
     @Operation(summary = "Update a course")
-    @PutMapping("/update")
-    public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody CoursesRequestDTO requestDTO){
-        //TODO add error handler
+    @PutMapping
+    public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody @Valid CoursesRequestDTO requestDTO){
         coursesService.updateCourse(id, requestDTO);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success update a course"));
     }
 
     @Operation(summary = "Delete a course")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<ApiResponse<String>> deleteCourse(@RequestParam Long id){
         //TODO add error handler
         coursesService.deleteCourse(id);
