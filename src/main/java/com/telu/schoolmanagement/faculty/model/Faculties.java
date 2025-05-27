@@ -19,6 +19,7 @@ public class Faculties {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String slug;
 
     @ManyToOne
     @JoinColumn(name= "created_by", referencedColumnName = "id")
