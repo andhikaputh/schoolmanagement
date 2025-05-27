@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LecturersResponseDTO implements Serializable {
-    private Long id;
     private String nidn;
     private Long user_id;
     private UserMinimalResponseDTO user;

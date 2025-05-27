@@ -18,8 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Lecturers {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "nidn", nullable = false, unique = true, length = 20)
     private String nidn;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -29,5 +28,6 @@ public class Lecturers {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     private Faculties faculty;
+
 
 }
