@@ -8,5 +8,6 @@ public class AppConstant {
 
     public static final String REDIS_GET_ALL_PROGRAM_LIST = "programList::all";
     public static String REDIS_GETALL_FACULTY = "facultyList::all";
+    public static String REDIS_GETALL_ROLES = "rolesList::all";
     public static String REDIS_GETALL_LECTURE = "lectureList::all";
 }
