@@ -1,8 +1,6 @@
 package com.telu.schoolmanagement.users.service;
 
-import com.telu.schoolmanagement.faculty.model.Faculties;
 import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
-import com.telu.schoolmanagement.program.model.Programs;
 import com.telu.schoolmanagement.program.repository.ProgramRepository;
 import com.telu.schoolmanagement.roles.model.Roles;
 import com.telu.schoolmanagement.roles.repository.RolesRepository;
@@ -11,13 +9,12 @@ import com.telu.schoolmanagement.users.dto.UsersResponseDTO;
 import com.telu.schoolmanagement.users.mapper.UsersMapper;
 import com.telu.schoolmanagement.users.model.Users;
 import com.telu.schoolmanagement.users.repository.UsersRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.telu.schoolmanagement.users.util.UsersUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -39,6 +36,9 @@ public class UsersService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UsersUtil usersUtil;
+
     public List<UsersResponseDTO> getAllUsers() {
         return usersRepository.findAll().stream()
                 .map(UsersMapper::toDTO)
@@ -54,7 +54,7 @@ public class UsersService {
     }
 
     public List<UsersResponseDTO> getUserByName(String name) {
-        return usersRepository.getByNameContaining(name).stream()
+        return usersRepository.findByNameIgnoreCaseContaining(name).stream()
                 .map(UsersMapper::toDTO)
                 .toList();
     }
@@ -65,58 +65,24 @@ public class UsersService {
                 .toList();
     }
 
-    public List<UsersResponseDTO> getUsersByGrad(LocalDate date) {
-        return usersRepository.getUsersByGraduateAt(date).stream()
-                .map(UsersMapper::toDTO)
-                .toList();
-    }
-
     public void updateUsers(Long id, UsersRequestDTO req) {
-        Users newUser = findUserById(id);
-        Users updatedBy = findUserById(req.getUpdatedBy());
-        Roles roles = findRoleById(req.getRoles());
-        Programs programs = findProgramById(req.getProgram());
-        Faculties faculties = findFacultyById(req.getFaculties());
+        Users newUser = usersUtil.findUserById(id);
+        Users updatedBy = usersUtil.findUserById(req.getUpdatedBy());
+        Roles roles = usersUtil.findRoleById(req.getRoles());
 
         newUser.setNip(req.getNip());
         newUser.setPassword(passwordEncoder.encode(req.getPassword()));
         newUser.setName(req.getName());
         newUser.setRole(roles);
-        newUser.setProgram(programs);
 
-        newUser.setFaculty(faculties);
         newUser.setIsActive(req.getIsActive());
-        newUser.setGraduateAt(req.getGraduateAt());
         newUser.setUpdatedBy(updatedBy);
 
         usersRepository.save(newUser);
 
     }
     public void deleteUsers(Long id) {
-        Users newUser = findUserById(id);
-
+        usersUtil.findUserById(id);
         usersRepository.deleteById(id);
     }
-
-//    Service Util
-    private Users findUserById(Long id) {
-        return usersRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User ID " + id + " doesn't exist"));
-    }
-
-    private Roles findRoleById(Long id) {
-        return rolesRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Role ID " + id + " doesn't exist"));
-    }
-
-    private Programs findProgramById(Long id) {
-        return programRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Program ID " + id + " doesn't exist"));
-    }
-
-    private Faculties findFacultyById(Long id) {
-        return facultyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Faculty ID " + id + " doesn't exist"));
-    }
-
 }

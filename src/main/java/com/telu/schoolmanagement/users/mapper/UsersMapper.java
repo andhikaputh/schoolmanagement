@@ -11,21 +11,10 @@
                     .nip(users.getNip())
                     .name(users.getName())
                     .isActive(users.getIsActive())
-                    .graduateAt(users.getGraduateAt())
 
                     .roles(users.getRole() != null ? new UsersResponseDTO.RoleSummary(
                             users.getRole().getId(),
                             users.getRole().getName()
-                    ) : null)
-
-                    .program(users.getProgram() != null ? new UsersResponseDTO.ProgramSummary(
-                            users.getProgram().getId(),
-                            users.getProgram().getName()
-                    ) : null)
-
-                    .faculties(users.getFaculty() != null ? new UsersResponseDTO.FacultySummary(
-                            users.getFaculty().getId(),
-                            users.getFaculty().getName()
                     ) : null)
 
                     .createdBy(users.getCreatedBy() != null ? new GeneralCreatedUpdatedBy(

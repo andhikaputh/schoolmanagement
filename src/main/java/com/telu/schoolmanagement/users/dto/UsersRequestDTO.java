@@ -20,11 +20,8 @@ public class UsersRequestDTO {
     private String name;
 
     private Long roles;
-    private Long program;
-    private Long faculties;
 
     private Boolean isActive;
-    private LocalDate graduateAt;
     private Long createdBy;
     private Long updatedBy;
     private LocalDateTime createdAt;

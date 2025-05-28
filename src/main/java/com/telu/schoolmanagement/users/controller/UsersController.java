@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 // Swagger URL
-@Tag(name = "Users Controller", description = "CRUD for all Users ( Create Update Delete havent done it yet )")
+@Tag(name = "Users Controller", description = "CRUD for all Users")
 @RestController
 @RequestMapping("/api/users")
 public class UsersController {
@@ -50,13 +50,6 @@ public class UsersController {
     @GetMapping("/act={act}")
     public ResponseEntity<ApiResponse<List<UsersResponseDTO>>> getUsersByIsAct(@PathVariable Boolean act) {
         return ResponseEntity.ok(new ApiResponse<>(true, "success", usersService.getUserByIsAct(act)));
-    }
-
-    @Operation(summary = "Get Users Graduated date")
-    @GetMapping("/grad={grad}")
-    public ResponseEntity<ApiResponse<List<UsersResponseDTO>>> getUsersByGrad(@PathVariable("grad") String grad) {
-        LocalDate date = LocalDate.parse(grad);
-        return ResponseEntity.ok(new ApiResponse<>(true, "success", usersService.getUsersByGrad(date)));
     }
 
     @Operation(summary = "Updating user by Id")

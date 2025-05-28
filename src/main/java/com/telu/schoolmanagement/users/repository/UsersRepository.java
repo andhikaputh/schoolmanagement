@@ -10,7 +10,6 @@ import com.telu.schoolmanagement.users.model.Users;
 
 public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> getUsersByNip(String nip);
-    List<Users> getByNameContaining(String name);
+    List<Users> findByNameIgnoreCaseContaining(String name);
     List<Users> getUsersByIsActive(Boolean active);
-    List<Users> getUsersByGraduateAt(LocalDate date);
 }

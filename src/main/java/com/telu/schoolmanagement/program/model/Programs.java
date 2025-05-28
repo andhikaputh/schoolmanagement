@@ -34,12 +34,4 @@ public class Programs {
     private LocalDateTime createdAt;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    private String slug;
-
-    @PrePersist
-    @PreUpdate
-    public void setSlugAuto(){
-        this.slug = Util.setSlugFromName(this.name);
-    }
 }
