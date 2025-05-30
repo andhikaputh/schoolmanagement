@@ -56,11 +56,11 @@ public class ProgramService {
     public ProgramResponseDTO getProgramById(Long id) {
 
         String redisKey = "program::" + id;
-
-        ProgramResponseDTO redisdata = redisCacheUtil.getCachedList(
-                AppConstant.REDIS_GET_ALL_PROGRAM_LIST,
-                new TypeReference<ProgramResponseDTO>() {}
-        );System.out.println("Data di redis :" + redisdata);
+        ProgramResponseDTO redisdata = redisCacheUtil.getCachedValue(
+                redisKey,
+                ProgramResponseDTO.class
+        );
+        System.out.println("Data di redis :" + redisdata);
 
         //if data avaible
         if(redisdata != null) return redisdata;
