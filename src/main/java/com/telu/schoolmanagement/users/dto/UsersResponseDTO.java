@@ -19,11 +19,8 @@ public class UsersResponseDTO {
     private String name;
 
     private RoleSummary roles;
-    private ProgramSummary program;
-    private FacultySummary faculties;
 
     private Boolean isActive;
-    private LocalDate graduateAt;
     private GeneralCreatedUpdatedBy createdBy;
     private GeneralCreatedUpdatedBy updatedBy;
     private LocalDateTime createdAt;
@@ -39,23 +36,4 @@ public class UsersResponseDTO {
         private String name;
     }
 
-    //    Getter for faculty id and name only
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class FacultySummary {
-        private Long id;
-        private String name;
-    }
-
-    //    Getter for program id and name only
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ProgramSummary {
-        private Long id;
-        private String name;
-    }
 }
