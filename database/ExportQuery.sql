@@ -3,7 +3,7 @@
 -- =========================================
 DROP TABLE IF EXISTS attendance;
 DROP TABLE IF EXISTS grades;
-DROP TABLE IF EXISTS krs;
+DROP TABLE IF EXISTS course_registrations;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS course_assignments;
 DROP TABLE IF EXISTS courses;
@@ -99,7 +99,7 @@ CREATE TABLE courses (
     name VARCHAR(100),
     code VARCHAR(50) UNIQUE,
     semester INTEGER,
-    sks INTEGER,
+    credit INTEGER,
     created_by INTEGER,
     updated_by INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -138,9 +138,9 @@ CREATE TABLE schedules (
 );
 
 -- =========================================
--- CREATE TABLE: krs
+-- CREATE TABLE: course_registrations
 -- =========================================
-CREATE TABLE krs (
+CREATE TABLE course_registrations (
     id SERIAL PRIMARY KEY,
     student_id INTEGER REFERENCES students(id),
     course_assignment_id INTEGER REFERENCES course_assignments(id),
@@ -157,7 +157,7 @@ CREATE TABLE krs (
 -- =========================================
 CREATE TABLE grades (
     id SERIAL PRIMARY KEY,
-    krs_id INTEGER REFERENCES krs(id),
+    course_registration_id INTEGER REFERENCES course_registrations(id),
     assignment_score DECIMAL,
     midterm_score DECIMAL,
     final_score DECIMAL,
@@ -173,7 +173,7 @@ CREATE TABLE grades (
 -- =========================================
 CREATE TABLE attendance (
     id SERIAL PRIMARY KEY,
-    krs_id INTEGER REFERENCES krs(id),
+    course_registration_id INTEGER REFERENCES course_registrations(id),
     schedule_id INTEGER REFERENCES schedules(id),
     meeting_date DATE,
     status VARCHAR(20),
@@ -210,7 +210,7 @@ VALUES
   (2, 'Physics', 1, 1);
 
 -- =========================================
--- INSERT DATA INTO users (program_id removed)
+-- INSERT DATA INTO users
 -- =========================================
 INSERT INTO users (nip, password, name, role_id, is_active, created_by, updated_by)
 VALUES
@@ -226,7 +226,7 @@ VALUES
   ('1010', '$2a$10$bHeGrxyraFRG6r1FzzRzTuazz2IPJCwtz7H40K9M5Y/2W76sjtdiS', 'Julia Student', 3, TRUE, 1, 1);
 
 -- =========================================
--- INSERT DATA INTO students (program_id added)
+-- INSERT DATA INTO students
 -- =========================================
 INSERT INTO students (user_id, nim, semester, graduate_at, program_id)
 VALUES
@@ -249,7 +249,7 @@ VALUES
 -- =========================================
 -- INSERT DATA INTO courses
 -- =========================================
-INSERT INTO courses (program_id, name, code, semester, sks, created_by, updated_by)
+INSERT INTO courses (program_id, name, code, semester, credit, created_by, updated_by)
 VALUES
   (1, 'Data Structures', 'CS101', 2, 3, 1, 1),
   (2, 'Quantum Mechanics', 'PH301', 5, 4, 1, 1);
@@ -269,22 +269,22 @@ VALUES
   (1, 'Monday', '08:00', '10:00', 'Lab 1', 1, 1);
 
 -- =========================================
--- INSERT DATA INTO krs
+-- INSERT DATA INTO course_registrations
 -- =========================================
-INSERT INTO krs (student_id, course_assignment_id, is_approve, academic_year, created_by, updated_by)
+INSERT INTO course_registrations (student_id, course_assignment_id, is_approve, academic_year, created_by, updated_by)
 VALUES
   (1, 1, TRUE, '2024/2025', 1, 1);
 
 -- =========================================
 -- INSERT DATA INTO grades
 -- =========================================
-INSERT INTO grades (krs_id, assignment_score, midterm_score, final_score, final_grade, created_by, updated_by)
+INSERT INTO grades (course_registration_id, assignment_score, midterm_score, final_score, final_grade, created_by, updated_by)
 VALUES
   (1, 85, 88, 90, 'A', 1, 1);
 
 -- =========================================
 -- INSERT DATA INTO attendance
 -- =========================================
-INSERT INTO attendance (krs_id, schedule_id, meeting_date, status, note, created_by, updated_by)
+INSERT INTO attendance (course_registration_id, schedule_id, meeting_date, status, note, created_by, updated_by)
 VALUES
   (1, 1, '2025-03-01', 'Present', 'On time', 1, 1);
