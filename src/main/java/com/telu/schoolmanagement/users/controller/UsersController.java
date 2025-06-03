@@ -29,6 +29,15 @@ public class UsersController {
         return ResponseEntity.ok(new ApiResponse<>(true, "success", usersService.getAllUsers()));
     }
 
+    @Operation(summary = "Get all Users Data with Pagination")
+    @GetMapping("/paginated")
+    public ResponseEntity<ApiResponse<List<UsersResponseDTO>>> getAllUsersWithPagination(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        return ResponseEntity.ok(usersService.getAllUsersWithPagination(page, size));
+    }
+
     @Operation(summary = "Get Users by Id")
     @GetMapping("/id={id}")
     public ResponseEntity<ApiResponse<UsersResponseDTO>> getIdUsers(@PathVariable Long id) {

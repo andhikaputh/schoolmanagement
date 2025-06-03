@@ -1,5 +1,7 @@
 package com.telu.schoolmanagement.users.service;
 
+import com.telu.schoolmanagement.common.response.ApiResponse;
+import com.telu.schoolmanagement.common.response.PaginationResponse;
 import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
 import com.telu.schoolmanagement.program.repository.ProgramRepository;
 import com.telu.schoolmanagement.roles.model.Roles;
@@ -13,6 +15,10 @@ import com.telu.schoolmanagement.users.util.UsersUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +51,35 @@ public class UsersService {
         return usersRepository.findAll().stream()
                 .map(UsersMapper::toDTO)
                 .toList();
+    }
+
+    @Transactional
+    public ApiResponse<List<UsersResponseDTO>> getAllUsersWithPagination(int page, int size) {
+
+        int adjustedPage = (page > 0) ? page - 1 : 0;
+
+        Pageable pageable = PageRequest.of(adjustedPage, size, Sort.by("createdAt").descending());
+        Page<Users> userPage = usersRepository.findAll(pageable);
+
+        List<UsersResponseDTO> userDTOs = userPage.getContent().stream()
+                .map(UsersMapper::toDTO)
+                .toList();
+
+        PaginationResponse pagination = new PaginationResponse(
+                userPage.getNumber(),
+                userPage.getSize(),
+                userPage.getTotalElements(),
+                userPage.getTotalPages(),
+                userPage.hasNext(),
+                userPage.hasPrevious()
+        );
+
+        return new ApiResponse<>(
+                true,
+                "success",
+                userDTOs,
+                pagination
+        );
     }
 
     @Transactional
