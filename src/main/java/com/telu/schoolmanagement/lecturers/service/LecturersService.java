@@ -76,7 +76,6 @@ public class LecturersService {
 
         Lecturers lecturer = Lecturers.builder()
                 .user(user)
-                .nidn(requestDTO.getNidn())
                 .faculty(faculty)
                 .build();
 
@@ -97,17 +96,15 @@ public class LecturersService {
         deleteLecturerCache(nidn);
 
         Lecturers lecturer = lecturersRepository.findByNidn(nidn)
-                .orElseThrow(() -> new EntityNotFoundException("Lecturer with ID " + nidn + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Lecturer with NIDN " + nidn + " not found"));
 
         if (requestDTO.getFacultyId() != null) {
             Faculties faculty = facultyRepository.findById(requestDTO.getFacultyId())
-                    .orElseThrow(() -> new EntityNotFoundException("Faculty with ID " + requestDTO.getFacultyId() + " not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("Faculty not found"));
             lecturer.setFaculty(faculty);
         }
 
-        if (requestDTO.getNidn() != null) {
-            lecturer.setNidn(requestDTO.getNidn());
-        }
+        lecturersRepository.save(lecturer);
 
     }
 

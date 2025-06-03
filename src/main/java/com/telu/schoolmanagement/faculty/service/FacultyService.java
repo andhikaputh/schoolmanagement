@@ -54,7 +54,7 @@ public class FacultyService {
     public FacultyResponseDTO getFacultyById(Long id){
        String redisKey = "faculty::"+id;
        FacultyResponseDTO redisData = redisCacheUtil.getCachedValue(
-               AppConstant.REDIS_GETALL_FACULTY,
+               redisKey,
                FacultyResponseDTO.class
        );
 
@@ -124,6 +124,6 @@ public class FacultyService {
 
     public void deleteAllFacultyIDCache(Long id){
         deleteAllFacultyCache();
-        redisCacheUtil.deleteCache("jurusan::"+id);
+        redisCacheUtil.deleteCache("faculty::"+id);
     }
 }
