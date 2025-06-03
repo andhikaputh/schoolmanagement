@@ -30,4 +30,6 @@ public class Lecturers {
     private Faculties faculty;
 
 
+
+
 }
