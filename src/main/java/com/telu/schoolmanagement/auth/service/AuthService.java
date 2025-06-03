@@ -9,6 +9,7 @@ import com.telu.schoolmanagement.users.mapper.UsersMapper;
 import com.telu.schoolmanagement.users.model.Users;
 import com.telu.schoolmanagement.users.repository.UsersRepository;
 import com.telu.schoolmanagement.users.util.UsersUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +36,7 @@ public class AuthService {
     @Autowired
     UsersUtil usersUtil;
 
+    @Transactional
     public AuthResponse login(LoginRequest request) {
 
         authenticationManager.authenticate(
@@ -45,7 +47,7 @@ public class AuthService {
         );
 
         var user = usersRepository.getUsersByNip(request.getNip())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("User with NIP " + request.getNip() + " not found"));
         var jwt = jwtConfig.generateToken(user);
 
         return AuthResponse.builder()
@@ -54,6 +56,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
 
         Roles roles = usersUtil.findRoleById(request.getRoleId());

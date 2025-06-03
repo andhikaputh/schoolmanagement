@@ -13,6 +13,7 @@ import com.telu.schoolmanagement.students.repository.StudentRepository;
 import com.telu.schoolmanagement.users.model.Users;
 import com.telu.schoolmanagement.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class StudentService {
     @Autowired
     private RedisCacheUtil redisCacheUtil;
 
+    @Transactional
     public List<StudentResponseDTO> getAllStudents(){
         List<StudentResponseDTO> redisData = redisCacheUtil.getCachedList(
                 AppConstant.REDIS_GETALL_STUDENT,
@@ -48,12 +50,16 @@ public class StudentService {
         redisCacheUtil.cacheValue(AppConstant.REDIS_GETALL_STUDENT, result);
         return result;
     }
+
+    @Transactional
     public List<StudentResponseDTO> searchStudentsByNim(String nim) {
         return studentRepository.findByNimIgnoreCaseContaining(nim)
                 .stream()
                 .map(StudentMapper::toDto)
                 .toList();
     }
+
+    @Transactional
     public void createStudent(StudentRequestDTO requestDTO, Long userId) {
         deleteAllStudentCache();
 
@@ -72,6 +78,8 @@ public class StudentService {
 
         studentRepository.save(student);
     }
+
+    @Transactional
     public void updateStudent(String nim, StudentRequestDTO requestDTO) {
         deleteStudentCache(nim);
 
@@ -94,6 +102,8 @@ public class StudentService {
 
         studentRepository.save(student);
     }
+
+    @Transactional
     public void deleteStudentByNim(String nim) {
         deleteStudentCache(nim);
         Students student = studentRepository.findByNim(nim)

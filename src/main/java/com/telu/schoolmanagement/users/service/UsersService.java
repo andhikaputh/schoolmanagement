@@ -10,6 +10,7 @@ import com.telu.schoolmanagement.users.mapper.UsersMapper;
 import com.telu.schoolmanagement.users.model.Users;
 import com.telu.schoolmanagement.users.repository.UsersRepository;
 import com.telu.schoolmanagement.users.util.UsersUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,32 +40,38 @@ public class UsersService {
     @Autowired
     private UsersUtil usersUtil;
 
+    @Transactional
     public List<UsersResponseDTO> getAllUsers() {
         return usersRepository.findAll().stream()
                 .map(UsersMapper::toDTO)
                 .toList();
     }
 
+    @Transactional
     public UsersResponseDTO getUsersById(Long id) {
         return UsersMapper.toDTO(usersRepository.findById(id).orElseThrow());
     }
 
+    @Transactional
     public UsersResponseDTO getUsersByNip(String nip) {
         return UsersMapper.toDTO(usersRepository.getUsersByNip(nip).orElseThrow());
     }
 
+    @Transactional
     public List<UsersResponseDTO> getUserByName(String name) {
         return usersRepository.findByNameIgnoreCaseContaining(name).stream()
                 .map(UsersMapper::toDTO)
                 .toList();
     }
 
+    @Transactional
     public List<UsersResponseDTO> getUserByIsAct(Boolean active) {
         return usersRepository.getUsersByIsActive(active).stream()
                 .map(UsersMapper::toDTO)
                 .toList();
     }
 
+    @Transactional
     public void updateUsers(Long id, UsersRequestDTO req) {
         Users newUser = usersUtil.findUserById(id);
         Users updatedBy = usersUtil.findUserById(req.getUpdatedBy());
@@ -81,6 +88,8 @@ public class UsersService {
         usersRepository.save(newUser);
 
     }
+
+    @Transactional
     public void deleteUsers(Long id) {
         usersUtil.findUserById(id);
         usersRepository.deleteById(id);
