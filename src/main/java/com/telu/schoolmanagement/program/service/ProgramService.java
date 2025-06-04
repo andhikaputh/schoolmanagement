@@ -37,13 +37,8 @@ public class ProgramService {
                 new TypeReference<List<ProgramResponseDTO>>() {}
         );
 
-        System.out.println("Data di redis :" + redisdata);
-
-        //if data available
         if(redisdata != null) return redisdata;
 
-        //if no data in redis
-        System.out.println(" Call data form DB");
         var result = programRepository.findAll().stream()
                 .map(ProgramMapper::toDTO)
                 .toList();
@@ -60,13 +55,9 @@ public class ProgramService {
                 redisKey,
                 ProgramResponseDTO.class
         );
-        System.out.println("Data di redis :" + redisdata);
 
-        //if data avaible
         if(redisdata != null) return redisdata;
 
-        //if no data in redis
-        System.out.println(" Call data form DB");
         var result = ProgramMapper.toDTO(programRepository.findById(id).orElseThrow());
         redisCacheUtil.cacheValue(redisKey, result);
         return result;
