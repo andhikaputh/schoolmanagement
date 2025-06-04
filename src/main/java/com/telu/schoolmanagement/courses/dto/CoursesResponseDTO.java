@@ -17,8 +17,9 @@ import java.time.LocalDateTime;
 public class CoursesResponseDTO implements Serializable {
     private Long id;
     private String name;
-    private String slug;
-    private int sks;
+    private String code;
+    private int semester;
+    private int credit;
     private ProgramResponseDTO program;
     private GeneralCreatedUpdatedBy createdBy;
     private GeneralCreatedUpdatedBy updatedBy;

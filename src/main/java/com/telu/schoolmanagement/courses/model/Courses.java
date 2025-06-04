@@ -22,8 +22,9 @@ public class Courses {
     private Long id;
 
     private String name;
-    private String slug;
-    private int sks;
+    private String code;
+    private int semester;
+    private int credit;
 
     @ManyToOne
     @JoinColumn(name = "program_id", referencedColumnName = "id")
@@ -40,10 +41,4 @@ public class Courses {
     private LocalDateTime createdAt;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    @PreUpdate
-    public void setSlugAuto() {
-        this.slug = Util.setSlugFromName(this.name);
-    }
 }
