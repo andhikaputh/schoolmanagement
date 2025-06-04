@@ -110,7 +110,9 @@ public class CoursesService {
 
         Courses courses = Courses.builder()
                 .name(request.getName())
-                .sks(request.getSks())
+                .code(request.getCode())
+                .semester(request.getSemester())
+                .credit(request.getCredit())
                 .programs(program)
                 .createdBy(user)
                 .createdAt(LocalDateTime.now())
@@ -134,7 +136,9 @@ public class CoursesService {
                 .orElseThrow(() -> new EntityNotFoundException("Can't find user with ID "+request.getUpdatedBy()));
 
         course.setName(request.getName());
-        course.setSks(request.getSks());
+        course.setCode(request.getCode());
+        course.setSemester(request.getSemester());
+        course.setCredit(request.getCredit());
         course.setPrograms(program);
         course.setUpdatedBy(user);
         course.setUpdatedAt(LocalDateTime.now());
