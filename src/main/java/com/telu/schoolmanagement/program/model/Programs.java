@@ -1,6 +1,5 @@
 package com.telu.schoolmanagement.program.model;
 
-import com.telu.schoolmanagement.common.util.Util;
 import com.telu.schoolmanagement.faculty.model.Faculties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
