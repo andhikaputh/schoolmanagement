@@ -82,6 +82,8 @@ public class CoursesService {
         return course;
     }
 
+    //TODO handle search by id and name, if both provided, return null or throw exception
+    //TODO cache handling for searchCourses
     @Transactional
     public List<CoursesResponseDTO> searchCourses(Long id, String name) {
         if (id != null && name == null) {

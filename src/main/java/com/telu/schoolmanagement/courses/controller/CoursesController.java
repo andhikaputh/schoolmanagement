@@ -24,13 +24,13 @@ public class CoursesController {
     private CoursesService coursesService;
 
     //TODO dirty code, need to clean up
-    @Operation(summary = "Get courses")
+    @Operation(summary = "Find courses by id or name, if both are null, return all courses")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> findCourses(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+    public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> findCourses
+    (@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
         if (id == null && name == null) {
             return ResponseEntity.ok(new ApiResponse<>(true, "success", coursesService.getAllCourses()));
         }
-        //TODO how cache this?
         //TODO how to handle if both id and name are provided
         List<CoursesResponseDTO> courses = coursesService.searchCourses(id, name);
         if (courses != null && !courses.isEmpty()) {
@@ -49,7 +49,8 @@ public class CoursesController {
 
     @Operation(summary = "Update a course")
     @PutMapping
-    public ResponseEntity<ApiResponse<String>> updateCourse(@RequestParam Long id, @RequestBody @Valid CoursesRequestDTO requestDTO){
+    public ResponseEntity<ApiResponse<String>> updateCourse
+    (@RequestParam Long id, @RequestBody @Valid CoursesRequestDTO requestDTO){
         coursesService.updateCourse(id, requestDTO);
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success update a course"));
     }
