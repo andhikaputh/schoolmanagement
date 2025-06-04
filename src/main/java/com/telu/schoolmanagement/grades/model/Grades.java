@@ -22,7 +22,6 @@ public class Grades {
     @OneToMany
     @JoinColumn(name = "krs_id", referencedColumnName = "id")
     @Column(name = "krs_id")
-
     private long krsId;
     @Column(name = "assignment_score")
     private double assignmentScore;
