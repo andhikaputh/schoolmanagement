@@ -1,4 +1,4 @@
-package com.telu.schoolmanagement.courses_registration.dto;
+package com.telu.schoolmanagement.course_registrations.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoursesRegistrationRequestDTO {
+public class CourseRegistrationsRequestDTO {
     @NotNull(message = "Student ID cannot be null")
     @Min(value = 1, message = "Student ID must be greater than 0")
     private Long studentId;
@@ -28,8 +28,8 @@ public class CoursesRegistrationRequestDTO {
     private String academicYear;
 
     @NotBlank(message = "Created By cannot be blank")
-    private String createdBy;
+    private Long createdBy;
 
     @NotBlank(message = "Updated By cannot be blank")
-    private String updatedBy;
+    private Long updatedBy;
 }

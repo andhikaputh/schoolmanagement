@@ -38,7 +38,7 @@ public class CoursesService {
     @Transactional
     public List<CoursesResponseDTO> getAllCourses() {
         List<CoursesResponseDTO> cachedCourses = redisCacheUtil.getCachedList(
-                AppConstant.REDIS_GETALL_COURSE,
+                AppConstant.REDIS_GET_ALL_COURSE,
                 new TypeReference<List<CoursesResponseDTO>>() {}
         );
 
@@ -52,7 +52,7 @@ public class CoursesService {
                 .toList();
 
         redisCacheUtil.cacheValue(
-                AppConstant.REDIS_GETALL_COURSE,
+                AppConstant.REDIS_GET_ALL_COURSE,
                 courses
         );
 
@@ -62,7 +62,7 @@ public class CoursesService {
     @Transactional
     public CoursesResponseDTO getCourseById(Long id) {
         CoursesResponseDTO cachedCourse = redisCacheUtil.getCachedValue(
-                AppConstant.REDIS_GETCOURSE_BY_ID+ id,
+                AppConstant.REDIS_GETCOURSE + id,
                 CoursesResponseDTO.class
         );
 
@@ -75,7 +75,7 @@ public class CoursesService {
                 .orElseThrow(() -> new EntityNotFoundException("Can't find course with ID "+id));
 
         redisCacheUtil.cacheValue(
-                AppConstant.REDIS_GETCOURSE_BY_ID + id,
+                AppConstant.REDIS_GETCOURSE + id,
                 course
         );
 
@@ -100,7 +100,7 @@ public class CoursesService {
 
     @Transactional
     public void createCourse(CoursesRequestDTO request){
-        redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GET_ALL_COURSE);
 
         Programs program = programRepository.findById(request.getProgramId())
                 .orElseThrow(() -> new EntityNotFoundException("Can't find program with ID "+request.getProgramId()));
@@ -123,8 +123,8 @@ public class CoursesService {
 
     @Transactional
     public void updateCourse(Long id, CoursesRequestDTO request){
-        redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
-        redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE_BY_ID + id);
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GET_ALL_COURSE);
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE + id);
 
         Courses course = coursesRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find course with ID "+id));
@@ -148,8 +148,8 @@ public class CoursesService {
 
     @Transactional
     public void deleteCourse(Long id){
-        redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
-        redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE_BY_ID + id);
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GET_ALL_COURSE);
+        redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE + id);
 
         if (!coursesRepository.existsById(id)){
             throw new EntityNotFoundException("Can't find course with ID "+id);

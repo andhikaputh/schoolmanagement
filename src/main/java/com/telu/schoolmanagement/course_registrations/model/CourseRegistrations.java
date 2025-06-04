@@ -1,6 +1,7 @@
-package com.telu.schoolmanagement.courses_registration.model;
+package com.telu.schoolmanagement.course_registrations.model;
 
 import com.telu.schoolmanagement.users.model.Users;
+import com.telu.schoolmanagement.students.model.Students;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,24 +15,23 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CoursesRegistration {
+public class CourseRegistrations {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
-//    @ManyToOne
-//    @JoinColumn(name = "student_id", referencedColumnName = "id")
-//    private Student student;
-    private Long studentId;
+    @ManyToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    private Students student;
 
 //    @ManyToOne
 //    @JoinColumn(name = "course_assignment_id", referencedColumnName = "id")
 //    private CourseAssignment courseAssignment;
     private Long courseAssignmentId;
 
-    @Column(name = "is_approved", defaultValue = "false")
+    @Column(name = "is_approved")
     private boolean isApproved;
 
     @Column(name = "academic_year")
