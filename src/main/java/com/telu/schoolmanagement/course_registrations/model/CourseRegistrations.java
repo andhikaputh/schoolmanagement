@@ -31,7 +31,7 @@ public class CourseRegistrations {
 //    private CourseAssignment courseAssignment;
     private Long courseAssignmentId;
 
-    @Column(name = "is_approved")
+    @Column(name = "is_approve")
     private boolean isApproved;
 
     @Column(name = "academic_year")
