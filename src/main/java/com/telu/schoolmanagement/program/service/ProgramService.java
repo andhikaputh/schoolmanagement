@@ -12,6 +12,7 @@ import com.telu.schoolmanagement.program.mapper.ProgramMapper;
 import com.telu.schoolmanagement.program.model.Programs;
 import com.telu.schoolmanagement.program.repository.ProgramRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class ProgramService {
     @Autowired
     RedisCacheUtil redisCacheUtil;
 
+    @Transactional
     public List<ProgramResponseDTO> getAllProgram() {
         List<ProgramResponseDTO> redisdata = redisCacheUtil.getCachedList(
                 AppConstant.REDIS_GET_ALL_PROGRAM_LIST,
@@ -53,6 +55,7 @@ public class ProgramService {
 
     }
 
+    @Transactional
     public ProgramResponseDTO getProgramById(Long id) {
 
         String redisKey = "program::" + id;
@@ -72,12 +75,14 @@ public class ProgramService {
         return result;
     }
 
+    @Transactional
     public List<ProgramResponseDTO> getProgramByName(String name) {
         return programRepository.findByNameIgnoreCaseContaining(name).stream()
                 .map(ProgramMapper::toDTO)
                 .toList();
     }
 
+    @Transactional
     public void createProgram(ProgramRequestDTO request) {
 
         deleteAllProgramCache();
@@ -96,6 +101,7 @@ public class ProgramService {
         programRepository.save(programs);
     }
 
+    @Transactional
     public void deleteProgram(Long id) {
         deleteAllProgramCache(id);
         if (!programRepository.existsById(id)) {
@@ -105,6 +111,7 @@ public class ProgramService {
         programRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateProgram(Long id, ProgramRequestDTO request) {
         deleteAllProgramCache(id);
         Programs newPrograms = programRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Program with Id " + id + " doesn't exist"));

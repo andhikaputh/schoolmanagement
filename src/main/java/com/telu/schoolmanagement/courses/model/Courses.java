@@ -1,6 +1,8 @@
 package com.telu.schoolmanagement.courses.model;
 
 import com.telu.schoolmanagement.common.util.Util;
+import com.telu.schoolmanagement.program.model.Programs;
+import com.telu.schoolmanagement.users.model.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,27 +22,23 @@ public class Courses {
     private Long id;
 
     private String name;
-    private String slug;
-    private int sks;
+    private String code;
+    private int semester;
+    private int credit;
 
-    //    refer to programs table
-    @Column(name = "program_id")
-    private int programId;
+    @ManyToOne
+    @JoinColumn(name = "program_id", referencedColumnName = "id")
+    private Programs programs;
 
-    //    refer to users table
-    @Column(name = "created_by")
-    private Long createdBy;
-    @Column(name = "updated_by")
-    private Long updatedBy;
+    @ManyToOne
+    @JoinColumn(name="created_by", referencedColumnName = "id")
+    private Users createdBy;
+    @ManyToOne
+    @JoinColumn(name="updated_by", referencedColumnName = "id")
+    private Users updatedBy;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    @PreUpdate
-    public void setSlugAuto() {
-        this.slug = Util.setSlugFromName(this.name);
-    }
 }

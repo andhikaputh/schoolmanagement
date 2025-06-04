@@ -28,13 +28,6 @@ public class LecturersController {
         );
     }
 
-    @Operation(summary = "Search lecturers by ID", description = "Find lecturers by ID")
-    @GetMapping("/id={id}")
-    public ResponseEntity<ApiResponse<LecturersResponseDTO>> getLecturerById(@PathVariable Long id) {
-        return ResponseEntity.ok(
-                new ApiResponse<>(true, "Success", lecturersService.getLecturerById(id))
-        );
-    }
     @Operation(summary = "Search lecturers by NIDN", description = "Find lecturers by NIDN")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<LecturersResponseDTO>>> searchLecturersByNidn(
@@ -55,21 +48,21 @@ public class LecturersController {
         );
     }
 
-    @Operation(summary = "Update lecturer", description = "Update lecturer by ID")
-    @PutMapping("/{id}")
+    @Operation(summary = "Update lecturer", description = "Update lecturer by NIDN")
+    @PutMapping("/{nidn}")
     public ResponseEntity<ApiResponse<String>> updateLecturer(
-            @PathVariable Long id,
+            @PathVariable String nidn,
             @RequestBody @Valid LecturersRequestDTO request) {
-        lecturersService.updateLecturer(id, request);
+        lecturersService.updateLecturer(nidn, request);
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "Lecturer updated successfully", request.toString())
         );
     }
 
-    @Operation(summary = "Delete lecturer", description = "Delete lecturer by ID")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteLecturerById(@PathVariable Long id) {
-        lecturersService.deleteLecturer(id);
+    @Operation(summary = "Delete lecturer", description = "Delete lecturer by NIDN")
+    @DeleteMapping("/{nidn}")
+    public ResponseEntity<ApiResponse<String>> deleteLecturerByNidn(@PathVariable String nidn) {
+        lecturersService.deleteLecturerByNidn(nidn);
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "Lecturer deleted successfully", null)
         );
