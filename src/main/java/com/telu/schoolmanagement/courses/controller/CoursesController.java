@@ -15,7 +15,7 @@ import java.util.List;
 
 //TODO handle createdBy and updatedBy by login user
 //TODO check user role access before allow to create, update, delete course
-@Tag(name = "Courses Controller", description = "Endpoints for managing courses (CRUD operations)")
+@Tag(name = "Courses Controller", description = "CRUD for courses")
 @RestController
 @RequestMapping("/api/courses")
 public class CoursesController {

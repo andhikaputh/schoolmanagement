@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Course Registrations Controller", description = "Endpoints for managing course registrations (CRUD operations)")
+@Tag(name = "Course Registrations Controller", description = "CRUD for course registrations")
 @RestController
 @RequestMapping("/api/course-registrations")
 public class CourseRegistrationsController {
