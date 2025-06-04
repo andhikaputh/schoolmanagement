@@ -13,6 +13,7 @@ import com.telu.schoolmanagement.program.repository.ProgramRepository;
 import com.telu.schoolmanagement.users.model.Users;
 import com.telu.schoolmanagement.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public class CoursesService {
     @Autowired
     private RedisCacheUtil redisCacheUtil;
 
+    @Transactional
     public List<CoursesResponseDTO> getAllCourses() {
         List<CoursesResponseDTO> cachedCourses = redisCacheUtil.getCachedList(
                 AppConstant.REDIS_GETALL_COURSE,
@@ -57,6 +59,7 @@ public class CoursesService {
         return courses;
     }
 
+    @Transactional
     public CoursesResponseDTO getCourseById(Long id) {
         CoursesResponseDTO cachedCourse = redisCacheUtil.getCachedValue(
                 AppConstant.REDIS_GETCOURSE_BY_ID+ id,
@@ -79,6 +82,7 @@ public class CoursesService {
         return course;
     }
 
+    @Transactional
     public List<CoursesResponseDTO> searchCourses(Long id, String name) {
         if (id != null && name == null) {
             return coursesRepository.findById(id)
@@ -94,6 +98,7 @@ public class CoursesService {
         return null;
     }
 
+    @Transactional
     public void createCourse(CoursesRequestDTO request){
         redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
 
@@ -114,6 +119,7 @@ public class CoursesService {
         coursesRepository.save(courses);
     }
 
+    @Transactional
     public void updateCourse(Long id, CoursesRequestDTO request){
         redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
         redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE_BY_ID + id);
@@ -136,6 +142,7 @@ public class CoursesService {
         coursesRepository.save(course);
     }
 
+    @Transactional
     public void deleteCourse(Long id){
         redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_COURSE);
         redisCacheUtil.deleteCache(AppConstant.REDIS_GETCOURSE_BY_ID + id);

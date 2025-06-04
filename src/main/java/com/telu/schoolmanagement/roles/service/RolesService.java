@@ -9,6 +9,7 @@ import com.telu.schoolmanagement.roles.mapper.RolesMapper;
 import com.telu.schoolmanagement.roles.model.Roles;
 import com.telu.schoolmanagement.roles.repository.RolesRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class RolesService {
     @Autowired
     RedisCacheUtil redisCacheUtil;
 
+    @Transactional
     public List<RolesResponseDTO> getAllRoles(){
         List<RolesResponseDTO> redisData = redisCacheUtil.getCachedList(
                         AppConstant.REDIS_GETALL_ROLES,
@@ -40,6 +42,7 @@ public class RolesService {
                 return result;
     }
 
+    @Transactional
     public RolesResponseDTO getRolesById(Long id){
         String redisKey = "roles::"+id;
         RolesResponseDTO redisData = redisCacheUtil.getCachedValue(
@@ -56,6 +59,7 @@ public class RolesService {
 
     }
 
+    @Transactional
     public void createRoles(RolesRequestDTO request) {
         deleteAllRolesCache();
         
@@ -71,6 +75,7 @@ public class RolesService {
         rolesRepository.save(roles);
     }
 
+    @Transactional
     public void deleteRolesById(Long id){
         deleteAllRolesIDCache(id);
 
@@ -80,6 +85,7 @@ public class RolesService {
         rolesRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateRoles(Long id, RolesRequestDTO requestDTO){
         deleteAllRolesIDCache(id);
 

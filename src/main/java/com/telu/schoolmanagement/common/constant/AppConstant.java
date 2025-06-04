@@ -12,4 +12,6 @@ public class AppConstant {
     public static String REDIS_GETCOURSE_BY_ID = "course::";
     public static String REDIS_GETALL_ROLES = "rolesList::all";
     public static String REDIS_GETALL_LECTURE = "lectureList::all";
+    public static String REDIS_GETALL_STUDENT = "studentList::all";
+    public static String REDIS_GETALL_USER = "userList::all";
 }
