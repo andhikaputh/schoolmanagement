@@ -11,6 +11,7 @@ import com.telu.schoolmanagement.faculty.repository.FacultyRepository;
 import com.telu.schoolmanagement.users.model.Users;
 import com.telu.schoolmanagement.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class FacultyService {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Transactional
     public List<FacultyResponseDTO> getAllFaculty(){
         List<FacultyResponseDTO> redisData = redisCacheUtil.getCachedList(
                 AppConstant.REDIS_GETALL_FACULTY,
@@ -48,10 +50,11 @@ public class FacultyService {
         return result;
     }
 
+    @Transactional
     public FacultyResponseDTO getFacultyById(Long id){
        String redisKey = "faculty::"+id;
        FacultyResponseDTO redisData = redisCacheUtil.getCachedValue(
-               AppConstant.REDIS_GETALL_FACULTY,
+               redisKey,
                FacultyResponseDTO.class
        );
 
@@ -64,12 +67,14 @@ public class FacultyService {
         return result;
     }
 
+    @Transactional
     public List<FacultyResponseDTO> getFacultyByName(String query){
         return facultyRepository.findByNameIgnoreCaseContaining(query).stream()
                 .map(FacultyMapper::toDTO)
                 .toList();
     }
 
+    @Transactional
     public void createFaculty(FacultyRequestDTO requestDTO, Long userId) {
         deleteAllFacultyCache();
 
@@ -91,6 +96,7 @@ public class FacultyService {
         facultyRepository.save(faculty);
     }
 
+    @Transactional
     public void deleteFacultyById(Long id) {
         deleteAllFacultyIDCache(id);
 
@@ -100,6 +106,7 @@ public class FacultyService {
         facultyRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateFaculty(Long id, FacultyRequestDTO requestDTO) {
         deleteAllFacultyIDCache(id);
 
@@ -117,6 +124,6 @@ public class FacultyService {
 
     public void deleteAllFacultyIDCache(Long id){
         deleteAllFacultyCache();
-        redisCacheUtil.deleteCache("jurusan::"+id);
+        redisCacheUtil.deleteCache("faculty::"+id);
     }
 }

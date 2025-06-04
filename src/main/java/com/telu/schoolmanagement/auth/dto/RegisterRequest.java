@@ -28,7 +28,6 @@ public class RegisterRequest {
     private Long roleId;
 
     private Boolean isActive;
-    private LocalDate graduateAt;
     private Long createdBy;
     private Long updatedBy;
 }

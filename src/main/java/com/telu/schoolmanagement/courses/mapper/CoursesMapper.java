@@ -11,8 +11,9 @@ public class CoursesMapper {
         return CoursesResponseDTO.builder()
                 .id(courses.getId())
                 .name(courses.getName())
-                .slug(courses.getSlug())
-                .sks(courses.getSks())
+                .code(courses.getCode())
+                .semester(courses.getSemester())
+                .credit(courses.getCredit())
                 .program(
                         ProgramMapper.toDTO(courses.getPrograms())
                 )

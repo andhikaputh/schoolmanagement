@@ -15,6 +15,7 @@ import com.telu.schoolmanagement.lecturers.repository.LecturersRepository;
 import com.telu.schoolmanagement.users.model.Users;
 import com.telu.schoolmanagement.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class LecturersService {
     @Autowired
     private RedisCacheUtil redisCacheUtil;
 
+    @Transactional
     public List<LecturersResponseDTO> getAllLecturers(){
         List<LecturersResponseDTO> redisData = redisCacheUtil.getCachedList(
                 AppConstant.REDIS_GETALL_LECTURE,
@@ -54,13 +56,15 @@ public class LecturersService {
         return result;
     }
 
-
+    @Transactional
     public List<LecturersResponseDTO> searchLecturersByNidn(String nidn) {
         return lecturersRepository.findByNidnIgnoreCaseContaining(nidn)
                 .stream()
                 .map(LecturersMapper::toDTO)
                 .toList();
     }
+
+    @Transactional
     public void createLecturer(LecturersRequestDTO requestDTO, Long userId) {
         deleteAllLecturerCache();
 
@@ -72,7 +76,6 @@ public class LecturersService {
 
         Lecturers lecturer = Lecturers.builder()
                 .user(user)
-                .nidn(requestDTO.getNidn())
                 .faculty(faculty)
                 .build();
 
@@ -82,28 +85,30 @@ public class LecturersService {
     public void deleteAllLecturerCache(){
         redisCacheUtil.deleteCache(AppConstant.REDIS_GETALL_LECTURE);
     }
+
     private void deleteLecturerCache(String nidn) {
         deleteAllLecturerCache();
         redisCacheUtil.deleteCache("lecturer::" + nidn);
     }
 
+    @Transactional
     public void updateLecturer(String nidn, LecturersRequestDTO requestDTO) {
         deleteLecturerCache(nidn);
 
         Lecturers lecturer = lecturersRepository.findByNidn(nidn)
-                .orElseThrow(() -> new EntityNotFoundException("Lecturer with ID " + nidn + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Lecturer with NIDN " + nidn + " not found"));
 
         if (requestDTO.getFacultyId() != null) {
             Faculties faculty = facultyRepository.findById(requestDTO.getFacultyId())
-                    .orElseThrow(() -> new EntityNotFoundException("Faculty with ID " + requestDTO.getFacultyId() + " not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("Faculty not found"));
             lecturer.setFaculty(faculty);
         }
 
-        if (requestDTO.getNidn() != null) {
-            lecturer.setNidn(requestDTO.getNidn());
-        }
+        lecturersRepository.save(lecturer);
 
     }
+
+    @Transactional
     public void deleteLecturerByNidn(String nidn) {
         deleteLecturerCache(nidn);
         Lecturers lecturer = lecturersRepository.findByNidn(nidn)
