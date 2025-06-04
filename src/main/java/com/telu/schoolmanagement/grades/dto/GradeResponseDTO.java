@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GradeResponseDTO implements Serializable {
     private long id;
-    private long krsId;
+    private long courseRegistrationId;
     private double assignmentScore;
     private double midtermScore;
     private double finalScore;

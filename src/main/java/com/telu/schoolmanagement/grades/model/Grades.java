@@ -19,10 +19,12 @@ public class Grades {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany
-    @JoinColumn(name = "krs_id", referencedColumnName = "id")
-    @Column(name = "krs_id")
-    private long krsId;
+//    @ManyToOne
+//    @JoinColumn(name = "course_registration_id", referencedColumnName = "id")
+//    @Column(name = "course_registration_id")
+    private long courseRegistrationId;
+
+
     @Column(name = "assignment_score")
     private double assignmentScore;
     @Column(name = "midterm_score")

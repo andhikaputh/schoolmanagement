@@ -7,7 +7,7 @@ public class GradeMapper {
     public static GradeResponseDTO toDTO(Grades grades){
         return GradeResponseDTO.builder()
                 .id(grades.getId())
-                .krsId(grades.getKrsId())
+                .courseRegistrationId(grades.getCourseRegistrationId())
                 .finalGrade(grades.getFinalGrade())
                 .assignmentScore(grades.getAssignmentScore())
                 .midtermScore(grades.getMidtermScore())

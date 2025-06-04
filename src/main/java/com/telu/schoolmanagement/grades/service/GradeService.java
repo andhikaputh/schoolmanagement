@@ -36,11 +36,8 @@ public class GradeService {
         );
         System.out.println("Data di redis : " + redisData);
 
-        //if data available in redis
         if(redisData != null) return redisData;
 
-        //if no data in redis
-        System.out.println("Call data from DB");
         var result = gradeRepository.findAll().stream()
                 .map(GradeMapper::toDTO)
                 .toList();
@@ -58,7 +55,6 @@ public class GradeService {
 
         if (redisData != null) return redisData;
 
-        System.out.println("Call data from DB");
         GradeResponseDTO result = GradeMapper.toDTO(gradeRepository.findById(id).orElseThrow());
         redisCacheUtil.cacheValue(redisKey, result);
         return result;
@@ -69,7 +65,7 @@ public class GradeService {
         //krs
 
         Grades grades = Grades.builder()
-                .krsId(requestDTO.getKrsId()) //TODO validate after krs already created
+                .courseRegistrationId(requestDTO.getCourseRegistrationId()) //TODO validate after krs already created
                 .assignmentScore(requestDTO.getAssignmentScore())
                 .midtermScore(requestDTO.getMidtermScore())
                 .finalGrade(requestDTO.getFinalGrade())
@@ -95,8 +91,7 @@ public class GradeService {
         deleteGradeCache(id);
         Grades newGrade = gradeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Grade with Id " + id + " doesn't exist"));
         // validate krs
-
-        newGrade.setKrsId(requestDTO.getKrsId());
+        newGrade.setCourseRegistrationId(requestDTO.getCourseRegistrationId());
         newGrade.setAssignmentScore(requestDTO.getAssignmentScore());
         newGrade.setMidtermScore(requestDTO.getMidtermScore());
         newGrade.setFinalScore(requestDTO.getFinalScore());

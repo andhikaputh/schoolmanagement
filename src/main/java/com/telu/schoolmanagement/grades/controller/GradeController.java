@@ -27,7 +27,7 @@ public class GradeController {
     }
 
     @Operation(summary = "Get grades by id", description = "Show grade data by id from user")
-    @GetMapping
+    @GetMapping("/id={id}")
     public ResponseEntity<ApiResponse<GradeResponseDTO>> getGradeById(Long id){
         return ResponseEntity.ok(new ApiResponse<>(true, "success",gradeService.getGradeById(id)));
     }
@@ -39,10 +39,16 @@ public class GradeController {
         return ResponseEntity.ok(new ApiResponse<>(true, "success", "success create grade"));
     }
     @Operation(summary = "update grades", description = "update a grades")
-    @PutMapping
+    @PutMapping("{id}")
     public ResponseEntity<ApiResponse<String>> updateGrade(@PathVariable Long id,@RequestBody @Valid GradeRequestDTO requestDTO){
         gradeService.updateGrade(id,requestDTO);
-        return ResponseEntity.ok(new ApiResponse<>(true, "success", "success update grade"));
+        return ResponseEntity.ok(new ApiResponse<>(true, "success update grade with id : " + id, null ));
+    }
+    @Operation(summary = "delete grades", description = "delete a grades")
+    @DeleteMapping("{id}")
+    public ResponseEntity<ApiResponse<String>> deleteGrade(@PathVariable Long id){
+        gradeService.deleteGrade(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "success delete grade with id " + id , null));
     }
 
 }
