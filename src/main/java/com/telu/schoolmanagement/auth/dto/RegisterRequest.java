@@ -28,6 +28,4 @@ public class RegisterRequest {
     private Long roleId;
 
     private Boolean isActive;
-    private Long createdBy;
-    private Long updatedBy;
 }
