@@ -60,8 +60,6 @@ public class AuthService {
     public AuthResponse register(RegisterRequest request) {
 
         Roles roles = usersUtil.findRoleById(request.getRoleId());
-        Users createdBy = usersUtil.findUserById(request.getCreatedBy());
-        Users updatedBy = usersUtil.findUserById(request.getUpdatedBy());
 
         var user = Users.builder()
                 .nip(request.getNip())
@@ -70,11 +68,12 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .createdAt(LocalDateTime.now())
                 .role(roles)
+                .isActive(true)
                 .updatedAt(LocalDateTime.now())
-                .createdBy(createdBy)
-                .updatedBy(updatedBy)
                 .build();
 
+        user.setCreatedBy(user);
+        user.setUpdatedBy(user);
         usersRepository.save(user);
 
         var jwt = jwtConfig.generateToken(user);
