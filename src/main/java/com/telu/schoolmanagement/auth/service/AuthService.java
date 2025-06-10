@@ -69,12 +69,9 @@ public class AuthService {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        Users cariId = usersRepository.save(user);
-
-        cariId.setCreatedBy(cariId);
-        cariId.setUpdatedBy(cariId);
-
-        usersRepository.save(cariId);
+        user.setCreatedBy(user);
+        user.setUpdatedBy(user);
+        usersRepository.save(user);
 
         var jwt = jwtConfig.generateToken(user);
         return AuthResponse.builder()
