@@ -21,15 +21,12 @@ public class CourseRegistrationsRequestDTO {
     @Min(value = 1, message = "Course Assignment ID must be greater than 0")
     private Long courseAssignmentId;
 
-    //Question: Should this be included in the request? or should it be set by DB table default?
-    //private boolean isApproved;
+    private boolean isApproved = false;
 
     @NotBlank(message = "Academic Year cannot be blank")
     private String academicYear;
 
-    @NotBlank(message = "Created By cannot be blank")
     private Long createdBy;
 
-    @NotBlank(message = "Updated By cannot be blank")
     private Long updatedBy;
 }

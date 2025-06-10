@@ -23,7 +23,6 @@ public class CoursesController {
     @Autowired
     private CoursesService coursesService;
 
-    //TODO dirty code, need to clean up
     @Operation(summary = "Find courses by id or name, if both are null, return all courses")
     @GetMapping
     public ResponseEntity<ApiResponse<List<CoursesResponseDTO>>> findCourses
