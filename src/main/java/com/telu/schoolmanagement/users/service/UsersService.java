@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -104,6 +105,31 @@ public class UsersService {
         return usersRepository.getUsersByIsActive(active).stream()
                 .map(UsersMapper::toDTO)
                 .toList();
+    }
+
+    @Transactional
+    public void createUsers(UsersRequestDTO req) {
+        if (usersRepository.existsByNip(req.getNip()))
+        {
+            throw new IllegalArgumentException("User with NIP " + req.getNip() + " is already exist");
+        }
+
+        Users createdBy = usersUtil.findUserById(req.getCreatedBy());
+        Roles roles = usersUtil.findRoleById(req.getRoles());
+
+        Users newUser = Users.builder()
+                .nip(req.getNip())
+                .password(passwordEncoder.encode(req.getPassword()))
+                .name(req.getName())
+                .role(roles)
+                .isActive(req.getIsActive())
+                .createdBy(createdBy)
+                .updatedBy(createdBy)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        usersRepository.save(newUser);
     }
 
     @Transactional

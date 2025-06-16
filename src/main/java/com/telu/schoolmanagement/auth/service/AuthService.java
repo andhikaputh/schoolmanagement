@@ -59,6 +59,11 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
 
+        if (usersRepository.existsByNip(request.getNip()))
+        {
+            throw new IllegalArgumentException("User with NIP " + request.getNip() + " is already exist");
+        }
+
         Roles roles = usersUtil.findRoleById(request.getRoleId());
 
         var user = Users.builder()
