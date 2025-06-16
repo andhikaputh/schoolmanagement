@@ -12,4 +12,5 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> getUsersByNip(String nip);
     List<Users> findByNameIgnoreCaseContaining(String name);
     List<Users> getUsersByIsActive(Boolean active);
+    Boolean existsByNip(String nip);
 }

@@ -61,6 +61,13 @@ public class UsersController {
         return ResponseEntity.ok(new ApiResponse<>(true, "success", usersService.getUserByIsAct(act)));
     }
 
+    @Operation(summary = "Creating User")
+    @PostMapping("")
+    public ResponseEntity<ApiResponse<String>> createUsers(@RequestBody @Valid UsersRequestDTO req) {
+        usersService.createUsers(req);
+        return ResponseEntity.ok(new ApiResponse<>(true, "success", "Success creating User"));
+    }
+
     @Operation(summary = "Updating user by Id")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> updateUsers(@RequestBody @Valid UsersRequestDTO req, @PathVariable Long id) {
