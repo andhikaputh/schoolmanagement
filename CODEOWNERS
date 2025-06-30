@@ -1,11 +1,28 @@
-# Approve Semua ke Mas Maulana
+# ALL aamaulana10
 * @aamaulana10
 
-# src Stduent untuk dika
-/src/student @andhikaputh
+# 9William
+/src/main/java/com/telu/schoolmanagement/users/ @9William @aamaulana10
+/src/main/java/com/telu/schoolmanagement/faculty/ @9William @aamaulana10
 
-# src Faculty untuk Luthfi
-/src/faculty @luthfihadi78
+# grexgi
+/src/main/java/com/telu/schoolmanagement/course_registrations/ @grexgi @aamaulana10
+/src/main/java/com/telu/schoolmanagement/courses/ @grexgi @aamaulana10
+# /path/to/course-assignment/code/ @grexgi @aamaulana10
 
-#src Auth untuk Gerr
-/src/auth @9William
+# luthfihadi78
+# /path/to/attendance/code/ @luthfihadi78 @aamaulana10
+/src/main/java/com/telu/schoolmanagement/roles/ @luthfihadi78 @aamaulana10
+
+# andhikaputh
+/src/main/java/com/telu/schoolmanagement/lecturers/ @andhikaputh @aamaulana10
+/src/main/java/com/telu/schoolmanagement/students/ @andhikaputh @aamaulana10
+
+# hafianfm
+/src/main/java/com/telu/schoolmanagement/grades/ @hafianfm @aamaulana10
+/src/main/java/com/telu/schoolmanagement/program/ @hafianfm @aamaulana10
+
+# group owner
+# /path/to/schedule/code/ @grexgi @9William @aamaulana10
+/src/main/java/com/telu/schoolmanagement/auth/ @ariarj22 @9William @aamaulana10
+/src/main/java/com/telu/schoolmanagement/common @ariarj22 @9William @aamaulana10
